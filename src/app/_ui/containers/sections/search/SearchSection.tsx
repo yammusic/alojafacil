@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
-import type { ChangeEvent } from 'react'
-import { Box, Container, Divider, Grid, InputAdornment, OutlinedInput, useTheme } from '@mui/material'
+import React from 'react'
+import { Box, Button, Container, Divider, Grid, InputAdornment, useTheme } from '@mui/material'
+import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
+import { DatePicker } from '@mui/x-date-pickers'
 
 import { ClearIcon, SearchIcon } from '../../../components/common'
 import type { SearchSectionProps } from './props-types'
 import styles from './styles.module.scss'
-import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
-import { DatePicker } from '@mui/x-date-pickers'
+import { MdSearch } from 'react-icons/md'
 
 export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
   const { palette } = useTheme()
@@ -38,7 +38,7 @@ export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
             <AutocompleteElement
               label="Destination"
               name="destination"
-              options={ [ 'Option 1', 'Option 2', 'Option 3' ] }
+              options={ [ 'Cartagena', 'San Andres', 'Medellín' ] }
               textFieldProps={ {
                 variant: 'outlined',
                 InputProps: { className: styles.destination }
@@ -75,7 +75,23 @@ export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
 
             <Divider />
 
+            <TextFieldElement
+              InputProps={ {
+                className: styles.guests,
+                endAdornment: (
+                  <InputAdornment position="end" sx={ { mr: -1 } }>
+                    <Button color="secondary" sx={ { borderRadius: '50%', p: 0, minWidth: '42px', height: '42px' } }>
+                      <MdSearch size={ 26 } />
+                    </Button>
 
+                    {/* <SearchIcon size={ 26 } sx={ { color: palette.grey[500], bgcolor: 'secondary.dark' } } /> */}
+                  </InputAdornment>
+                ),
+              } }
+              label="Guests"
+              name="guests"
+              variant="outlined"
+            />
           </Box>
 
           { /* <OutlinedInput
