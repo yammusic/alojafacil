@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// import './models/user'
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  email     String    @unique
+  password  String
+  secretKey String
+  status    String    @default("ACTIVE")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  info     UserInfo?
+  roles    Role[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+// UserInfo model
+model UserInfo {
+  id              Int       @id @default(autoincrement())
+  user            User      @relation(fields: [userId], references: [id])
+  userId          Int       @unique
+  firstName       String
+  lastName        String
+  dateOfBirth     DateTime
+  phoneNumber     String
+  documentType    String
+  documentNumber  String
+  address         String?
+  city            City      @relation(fields: [cityId], references: [id])
+  cityId          Int
+  country         Country   @relation(fields: [countryId], references: [id])
+  countryId       Int
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("user_info")
+}
+
+// Role model
+model Role {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  status    String    @default("ACTIVE")
+  users     User[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("roles")
+}
+
+// Session model
+model Session {
+  id          Int       @id @default(autoincrement())
+  accessToken String    @unique
+  status      String    @default("ACTIVE")
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+
+  @@map("sessions")
+}
+
+// Countries, states, cities
+
+model Country {
+  id              Int        @id
+  name            String
+  iso3            String
+  iso2            String
+  numeric_code    String
+  phone_code      Int
+  capital         String
+  currency        String
+  currency_name   String
+  currency_symbol String
+  tld             String
+  native          String?
+  region          String
+  subregion       String
+  latitude        String
+  longitude       String
+  emoji           String
+  states          State[]
+  UserInfo        UserInfo[]  @ignore
+
+  @@map("countries")
+}
+
+model State {
+  id         Int     @id
+  name       String
+  state_code String
+  country    Country @relation(fields: [countryId], references: [id])
+  countryId  Int
+  cities     City[]
+
+  @@map("states")
+}
+
+model City {
+  id        Int        @id
+  name      String
+  latitude  String
+  longitude String
+  state     State      @relation(fields: [stateId], references: [id])
+  stateId   Int
+  UserInfo  UserInfo[] @ignore
+
+  @@map("cities")
+}

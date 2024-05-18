@@ -1,0 +1,19 @@
+.form {
+  margin-top: 1rem;
+}
+
+.alert {
+  margin-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit {
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  text-transform: capitalize !important;
+}

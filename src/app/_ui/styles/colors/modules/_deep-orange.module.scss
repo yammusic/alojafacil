@@ -1,0 +1,7 @@
+@use '../values/_deep-orange.scss' as v;
+
+:export {
+  @each $key, $color in v.$deepOrange {
+    deepOrange#{$key}: $color;
+  }
+}

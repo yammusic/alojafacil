@@ -1,0 +1,19 @@
+.header {
+  position: fixed !important;
+  color: inherit !important;
+  border-bottom: 1px solid grey;
+}
+
+.toolbarLeft {
+  display: flex;
+  width: 228px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbarRight {
+  display: flex !important;
+  gap: .5rem;
+  flex-direction: row !important;
+  align-items: center;
+}

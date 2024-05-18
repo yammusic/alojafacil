@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: .5rem;
+}
+
+.birth {
+  margin-top: 1rem !important;
+  margin-bottom: .5rem !important;
+  width: 100%;
+}

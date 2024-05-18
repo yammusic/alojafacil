@@ -1,0 +1,11 @@
+@function capitalize($string) {
+  $first: to-upper-case(str-slice('#{$string}', 1, 1));
+  $rest: str-slice('#{$string}', 2);
+  @return #{$first}#{$rest};
+}
+
+@function uncapitalize($string) {
+  $first: to-lower-case(str-slice('#{$string}', 1, 1));
+  $rest: str-slice('#{$string}', 2);
+  @return #{$first}#{$rest};
+}

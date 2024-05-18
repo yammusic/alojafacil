@@ -1,0 +1,50 @@
+@use '../colors/values' as values;
+
+/** Get all colors variables **/
+@function getColors() {
+  @return module-variables(values);
+}
+
+/** Get color values by name **/
+@function getColorValues($color) {
+  $colors: getColors();
+  $idx: '#{$color}';
+
+  @if (not map-has-key($colors, $idx)) {
+    @error 'Unknown color: #{$color}.';
+  }
+
+  @return map-get($colors, $idx);
+}
+
+/** Get color by name and key **/
+@function getColor($color, $key: 500) {
+  $kTypes: ('number', 'string', 'list');
+  $kIsValid: index($kTypes, type-of($key));
+  $res: ();
+
+  @if (not $kIsValid) {
+    @error 'Unknown color key type: #{$key}';
+  }
+
+  @if (type-of($key) == 'list') {
+    @each $idx in $key {
+      @if (type-of($idx) == 'map') {
+        @each $n, $k in $idx {
+          $res: map-merge($res, (#{$n}: getColor($color, $k)));
+        }
+      } @else {
+        $res: map-merge($res, (#{$idx}: getColor($color, $idx)));
+      }
+    }
+  } @else {
+    $k: '#{$key}';
+    $values: getColorValues('#{$color}');
+    @if (not map-has-key($values, $k)) {
+      @error 'Unknown color key: #{$color}[#{$k}].';
+    }
+    $res: map-get($values, $k);
+  }
+
+  @return $res;
+}

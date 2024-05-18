@@ -1,0 +1,58 @@
+$cardWidth: 240px;
+$cardHeight: 260px;
+
+.container {
+  margin: 3rem 0;
+  padding: 0 2rem;
+}
+
+.titleContainer {
+  margin-bottom: 2rem !important;
+}
+
+.title {
+  font-size: 26px !important;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.card {
+  width: $cardWidth;
+  height: $cardHeight;
+  position: relative;
+  display: flex;
+}
+
+.cardActionArea {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardMedia {
+  width: $cardWidth !important;
+  height: calc($cardHeight - 7rem) !important;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.ratingContainer {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+  gap: .5rem;
+}

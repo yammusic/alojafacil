@@ -1,0 +1,7 @@
+@use '../values/_cyan.scss' as v;
+
+:export {
+  @each $key, $color in v.$cyan {
+    cyan#{$key}: $color;
+  }
+}

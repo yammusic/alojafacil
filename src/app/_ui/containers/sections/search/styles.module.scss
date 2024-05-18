@@ -1,0 +1,30 @@
+.container {
+  height: 320px;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.destination {
+  width: 240px;
+  border-radius: 2rem 0 0 2rem !important;
+}
+
+.datePicker {
+  width: 180px;
+  border-radius: 0 !important;
+  margin-left: -1px !important;
+}
+
+.searchInputContainer {
+  width: 434px;
+  margin-left: 16px;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
