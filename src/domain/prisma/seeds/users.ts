@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { SECRET_KEY } from '../../constants/env'
 import { useTurso } from '../../db/client'
 import { hashPassword } from '../../utils/crypto/encoder'
 
@@ -13,13 +14,13 @@ export async function seedUsers() {
       {
         username: 'admin',
         email: 'admin@localhost',
-        secretKey: process.env.SECRET_KEY as string,
+        secretKey: SECRET_KEY as string,
         password: hashPassword('admin123'),
         roles: { connect: { id: adminRole?.id } },
       }, {
         username: 'member',
         email: 'member@localhost',
-        secretKey: process.env.SECRET_KEY as string,
+        secretKey: SECRET_KEY as string,
         password: hashPassword('member123'),
         roles: { connect: { id: memberRole?.id } },
       },
