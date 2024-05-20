@@ -27,6 +27,8 @@ model User {
   info     UserInfo?
   roles    Role[]
   sessions Session[]
+  bookings Booking[]
+  reviews  Review[]
 
   @@map("users")
 }
@@ -79,7 +81,6 @@ model Session {
 }
 
 // Countries, states, cities
-
 model Country {
   id              Int        @id
   name            String
@@ -98,8 +99,10 @@ model Country {
   latitude        String
   longitude       String
   emoji           String
+
   states          State[]
   UserInfo        UserInfo[]  @ignore
+  Hotels          Hotel[]     @ignore
 
   @@map("countries")
 }
@@ -107,10 +110,12 @@ model Country {
 model State {
   id         Int     @id
   name       String
-  state_code String
-  country    Country @relation(fields: [countryId], references: [id])
   countryId  Int
+  state_code String
+
+  country    Country @relation(fields: [countryId], references: [id])
   cities     City[]
+  Hotels     Hotel[]     @ignore
 
   @@map("states")
 }
@@ -120,9 +125,107 @@ model City {
   name      String
   latitude  String
   longitude String
-  state     State      @relation(fields: [stateId], references: [id])
   stateId   Int
+
+  state     State      @relation(fields: [stateId], references: [id])
   UserInfo  UserInfo[] @ignore
+  Hotels    Hotel[]    @ignore
 
   @@map("cities")
+}
+
+
+// Hotels
+model Hotel {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  address     String
+  latitude    String
+  longitude   String
+  cityId      Int
+  stateId     Int
+  countryId   Int
+  postalCode  String
+  picture     String
+  images      String
+  available   Boolean      @default(true)
+  rating      Float?
+  policies    String?
+  amenities   String?
+  facilities  String?
+  services    String?
+  payments    String?
+  status      String       @default("ACTIVE")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  city        City         @relation(fields: [cityId], references: [id])
+  state       State        @relation(fields: [stateId], references: [id])
+  country     Country      @relation(fields: [countryId], references: [id])
+  rooms       Room[]
+  reviews     Review[]
+
+  @@map("hotels")
+}
+
+// Rooms
+model Room {
+  id          Int       @id @default(autoincrement())
+  hotelId     Int
+  roomNumber  String
+  type        String
+  description String?
+  basePrice   Float
+  taxes       Float
+  location    String
+  picture     String
+  images      String
+  available   Boolean   @default(true)
+  bathrooms   Int       @default(1)
+  capacity    Int       @default(1)
+  services    String?
+  status      String    @default("ACTIVE")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  hotel       Hotel     @relation(fields: [hotelId], references: [id])
+  bookings    Booking[]
+
+  @@map("rooms")
+}
+
+// Bookings
+model Booking {
+  id          Int       @id @default(autoincrement())
+  roomId      Int
+  userId      Int
+  checkIn     DateTime
+  checkOut    DateTime
+  guestInfo   String
+  emergency   String
+  status      String    @default("ACTIVE")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  room        Room      @relation(fields: [roomId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@map("bookings")
+}
+
+// Reviews
+model Review {
+  id          Int       @id @default(autoincrement())
+  hotelId     Int
+  userId      Int
+  rating      Int       @default(0)
+  comment     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  hotel       Hotel     @relation(fields: [hotelId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@map("reviews")
 }

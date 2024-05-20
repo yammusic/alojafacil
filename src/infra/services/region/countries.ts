@@ -1,33 +1,47 @@
 import axios from 'axios'
-import type { Country, State } from '@/domain/db'
+import useSWR from 'swr'
 
-export interface CountriesResponse {
+import type { Country, State } from '@/domain/db'
+import { useAppActions } from '@/domain/providers'
+
+interface Response {
   content: {
     message: string
-    data: Country[]
+    data: unknown[]
   }
-  statu: {
+  status: {
     code: number
     reason: string
     success: boolean
   }
 }
 
-export interface StatesResponse {
+export interface CountriesResponse extends Response {
+  content: {
+    message: string
+    data: Country[]
+  }
+}
+
+export interface StatesResponse extends Response {
   content: {
     message: string
     data: State[]
-  }
-  statu: {
-    code: number
-    reason: string
-    success: boolean
   }
 }
 
 export const fetchCountries = async () => {
   const url = '/api/region/countries'
   const { data } = await axios.get<CountriesResponse>(url)
+
+  // const { setCountries } = useAppActions()
+  // setCountries(data.content.data)
+
+  return data
+}
+
+export const fetchCountriesSWR = async () => {
+  const data = useSWR('/api/region/countries', fetchCountries)
   return data
 }
 

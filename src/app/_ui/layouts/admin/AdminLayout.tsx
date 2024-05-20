@@ -21,7 +21,6 @@ export function AdminLayout({ children }: Readonly<AdminLayoutProps>) {
         className={ styles.main }
         component="main"
         sx={ {
-          marginTop: 8,
           marginLeft: { xs: 0, md: `${drawerWidth}px` },
         } }
       >
