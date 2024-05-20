@@ -38,9 +38,9 @@ export const signJWT = async (payload: Payload, secret: string, opts?: SignOptio
   const { alg = AlgorithmJWT.HS256 } = { ...opts }
 
   const sign = new SignJWT({
-    ...payload,
     createdAt: createdAt.toMillis(),
     expiredAt: expiredAt.toMillis(),
+    ...payload,
   })
     .setProtectedHeader({ alg })
     .setIssuedAt()
@@ -62,5 +62,5 @@ export const decodeJWT = async (jwt: string, secret: string, opts?: DecodeOption
 
 export const isTokenExpired = async (token: string, secret: string) => {
   const { expiredAt } = await decodeJWT(token, secret)
-  return (expiredAt < DateTime.now().toMillis())
+  return (Number(expiredAt) < DateTime.now().toMillis())
 }

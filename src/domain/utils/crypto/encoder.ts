@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js'
+import { SECRET_KEY } from '@/domain/constants'
 
 export enum Algorithm {
   Base64 = 'Base64',
@@ -150,6 +151,6 @@ export const decodeHash = (encrypted: Hash, secret: string, opts: Options = {}) 
 }
 
 export const hashPassword = (password: string) => {
-  const secretKey = process.env.SECRET_KEY as string
+  const secretKey = SECRET_KEY as string
   return encodeHash([password, secretKey], { algorithm: Algorithm.HmacSHA3 }).toString()
 }
