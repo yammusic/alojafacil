@@ -1,0 +1,14 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  background-color: var(--content-bg-color);
+}
+
+.container {
+  display: flex !important;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.5rem !important;
+}
