@@ -6,8 +6,9 @@ import type { MenuItemTitleProps } from './props-types'
 export function MenuItemTitle({ title, selected }: Readonly<MenuItemTitleProps>) {
   return (
     <Typography
-      color="inherit"
-      variant={ selected ? 'h5' : 'body1' }
+      color="text.primary"
+      fontWeight={ selected ? 'bold' : 'normal' }
+      variant="body1"
     >
       { title }
     </Typography>

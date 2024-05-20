@@ -1,5 +1,6 @@
-import type { MouseEvent } from 'react'
 import React, { useCallback, useState } from 'react'
+import Link from 'next/link'
+import type { MouseEvent } from 'react'
 import {
   Box,
   Chip,
@@ -13,8 +14,8 @@ import {
   useTheme,
 } from '@mui/material'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import Link from 'next/link'
-import { BellIcon } from '../../../../components/common'
+
+import { BellIcon } from '@/app/components'
 
 const status = [
   { label: 'All', value: 'all' },
@@ -127,10 +128,10 @@ export function NotificationSection() {
               <Grid item>
                 <Typography
                   color="primary"
-                  component={ Link }
-                  href="#"
+                  // component={ Link }
+                  // href="#"
                   sx={ { fontSize: '0.75rem' } }
-                  to="#"
+                  // to="#"
                   variant="body2"
                 >
                   Mark as all read

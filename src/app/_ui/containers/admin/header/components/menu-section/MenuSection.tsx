@@ -13,12 +13,10 @@ export function MenuSection({ onPress }: Readonly<MenuSectionProps>) {
       <Avatar
         className={ styles.menuBtn }
         sx={ {
-          background: palette.secondary.light,
           color: palette.secondary.dark,
 
           '&:hover': {
-            background: palette.secondary.dark,
-            color: palette.secondary.light
+            background: `${palette.secondary.dark} !important`,
           }
         } }
       >

@@ -4,32 +4,33 @@ import React, { useCallback, useEffect } from 'react'
 import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material'
 
 import { themeDrawerOpen, themeDrawerWidth, useThemeActions } from '@/domain/providers'
-import { MenuSection } from './components/menu-section'
+import { MenuListSection } from './components'
+
+import styles from './styles.module.scss'
 
 export function Sidebar() {
-  const { palette, breakpoints } = useTheme()
-  const matchDownMd = useMediaQuery(breakpoints.down('md'))
+  const { palette, breakpoints, transitions } = useTheme()
   const matchUpMd = useMediaQuery(breakpoints.up('md'))
 
   const { setDrawerOpen } = useThemeActions()
   const drawerOpened = themeDrawerOpen()
   const drawerWidth = themeDrawerWidth()
 
-  const onDrawerToggle = useCallback(() => {
-    setDrawerOpen(!drawerOpened)
-  }, [drawerOpened, setDrawerOpen])
+  const onDrawerClose = useCallback(() => {
+    setDrawerOpen(false)
+  }, [])
 
   useEffect(() => {
-    if (matchDownMd) {
+    if (!matchUpMd) {
       setDrawerOpen(false)
     } else {
       setDrawerOpen(true)
     }
-  }, [matchDownMd])
+  }, [matchUpMd])
 
   return (
     <Box
-      aria-label="mailbox folders"
+      aria-label="sidebar"
       component="nav"
       sx={ {
         flexShrink: { md: 0 },
@@ -39,23 +40,28 @@ export function Sidebar() {
       <Drawer
         ModalProps={ { keepMounted: true } }
         anchor="left"
+        className={ styles.drawer }
         color="inherit"
-        onClose={ onDrawerToggle }
+        container={ document.body }
+        onClose={ onDrawerClose }
         open={ drawerOpened }
         sx={ {
           '& .MuiDrawer-paper': {
+            py: 2,
             width: drawerWidth,
+            transition: transitions.create('width'),
             background: palette.background.default,
             color: palette.text.primary,
             borderRight: 'none',
+
             [breakpoints.up('md')]: {
-              top: '88px'
+              top: '64px'
             }
           }
         } }
         variant={ matchUpMd ? 'persistent' : 'temporary' }
       >
-        <MenuSection />
+        <MenuListSection />
       </Drawer>
     </Box>
   )

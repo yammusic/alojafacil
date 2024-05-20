@@ -1,7 +1,5 @@
-$borderRadius: 12px;
-
 .menuBtnContainer {
-  border-radius: $borderRadius !important;
+  border-radius: var(--border-radius) !important;
   overflow: hidden;
   flex-shrink: 0;
   line-height: 1;
@@ -12,5 +10,10 @@ $borderRadius: 12px;
 }
 
 .menuBtn {
+  background-color: var(--secondary-light-bg-color) !important;
   transition: all .2s ease-in-out;
+}
+
+.menuBtn:hover {
+  color: var(--secondary-light-bg-color) !important;
 }

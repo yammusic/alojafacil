@@ -1,33 +1,28 @@
 'use client'
 
 import React from 'react'
-import { Divider, List, Typography, useTheme } from '@mui/material'
+import { Divider, List, Typography } from '@mui/material'
+
+import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
+import { themeDrawerWidth } from '@/domain/providers'
 import { MenuCollapse } from '../menu-collapse'
 import { MenuItem } from '../menu-item'
+import type { MenuGroupProps } from './props-types'
 
-export function MenuGroup({ item }) {
-  const theme = useTheme()
+export function MenuGroup({ item }: Readonly<MenuGroupProps>) {
+  const drawerWidth = themeDrawerWidth()
+  const isSmallDrawer = drawerWidth == DRAWER_WIDTH_SMALL
 
   return (
     <>
       <List
         subheader={
-          item.title ? (
-            <Typography
-              gutterBottom
-              display="block"
-              sx={ { ...theme.typography.menuCaption } }
-              variant="caption"
-            >
+          (item.title && !isSmallDrawer) ? (
+            <Typography gutterBottom variant="subtitle2">
               { item.title }
 
               { item.caption ? (
-                <Typography
-                  gutterBottom
-                  display="block"
-                  sx={ { ...theme.typography.subMenuCaption } }
-                  variant="caption"
-                >
+                <Typography gutterBottom variant="caption">
                   { item.caption }
                 </Typography>
               ) : null }
@@ -35,7 +30,7 @@ export function MenuGroup({ item }) {
           ) : null
         }
       >
-        { item.children.map((menu) => {
+        { item.children?.map((menu) => {
           if (menu.type === 'collapse') {
             return <MenuCollapse key={ menu.id } level={ 1 } menu={ menu } />
           }

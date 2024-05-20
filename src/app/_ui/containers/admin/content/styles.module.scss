@@ -1,0 +1,8 @@
+.content {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  border-radius: var(--border-radius);
+  margin-top: 1.5rem;
+  padding: 1rem;
+}

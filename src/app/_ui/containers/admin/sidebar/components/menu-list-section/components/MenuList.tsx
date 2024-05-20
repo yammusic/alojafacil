@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
 
+import type { SidebarMenuItem } from '@/domain/providers'
 import { appSidebarMenu } from '@/domain/providers'
 import { MenuGroup } from './menu-group'
 
@@ -9,7 +10,7 @@ export function MenuList() {
 
   return (
     <Box>
-      { menuItems.map((item) => {
+      { menuItems.map((item: SidebarMenuItem) => {
         if (item.type === 'group') {
           return <MenuGroup item={ item } key={ item.id } />
         }

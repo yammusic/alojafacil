@@ -1,3 +1,2 @@
-export * from './logo-section'
-export * from './menu-section'
+export * from './menu-list-section'
 export * from './version-section'

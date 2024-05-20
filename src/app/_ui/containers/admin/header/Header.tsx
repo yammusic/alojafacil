@@ -1,28 +1,36 @@
 'use client'
 
 import React, { useCallback } from 'react'
-import { AppBar, Box, Toolbar, useTheme } from '@mui/material'
+import { AppBar, Box, Toolbar, useMediaQuery, useTheme } from '@mui/material'
 
-import { themeDrawerOpen, useThemeActions } from '@/domain/providers/store'
-import {
-  LogoSection,
-  MenuSection,
-  SearchSection,
-  NotificationSection,
-  LocaleSection,
-  ProfileSection,
-} from './components'
-
+import { DRAWER_WIDTH, DRAWER_WIDTH_SMALL } from '@/domain/constants'
+import { themeDrawerOpen, themeDrawerWidth, useThemeActions } from '@/domain/providers/store'
+import { ProfileSection, LogoSection } from '../../header/components'
+import { MenuSection } from './components'
 import styles from './styles.module.scss'
 
 export function Header() {
   const { palette, breakpoints, transitions } = useTheme()
-  const { setDrawerOpen } = useThemeActions()
+  const matchUpMd = useMediaQuery(breakpoints.up('md'))
+
+  const { setDrawerOpen, setDrawerWidth } = useThemeActions()
   const drawerOpened = themeDrawerOpen()
+  const drawerWidth = themeDrawerWidth()
 
   const onDrawerToggle = useCallback(() => {
-    setDrawerOpen(!drawerOpened)
-  }, [drawerOpened, setDrawerOpen])
+    if (matchUpMd && drawerOpened) {
+      setDrawerWidth((
+        drawerWidth === DRAWER_WIDTH
+          ? DRAWER_WIDTH_SMALL
+          : DRAWER_WIDTH
+      ))
+    } else {
+      if (!matchUpMd) {
+        setDrawerWidth(DRAWER_WIDTH)
+      }
+      setDrawerOpen(!drawerOpened)
+    }
+  }, [drawerOpened, matchUpMd, drawerWidth])
 
   return (
     <AppBar
@@ -44,25 +52,24 @@ export function Header() {
             }
           } }
         >
-          <LogoSection />
+          <Box sx={ { display: { xs: 'none', md: 'flex' } } }>
+            <LogoSection />
+          </Box>
 
           <MenuSection onPress={ onDrawerToggle } />
         </Box>
-
-        {/* Search */}
-        <SearchSection />
 
         <Box sx={ { flexGrow: 1 } } />
 
         <Box sx={ { flexGrow: 1 } } />
 
         {/* Locale */}
-        <LocaleSection />
+        {/* <LocaleSection /> */}
 
         {/* Notification */}
-        <NotificationSection />
+        {/* <NotificationSection /> */}
 
-        <ProfileSection />
+        <ProfileSection admin />
       </Toolbar>
     </AppBar>
   )

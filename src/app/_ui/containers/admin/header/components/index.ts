@@ -1,6 +1,2 @@
-export * from './locale-section'
-export * from './logo-section'
 export * from './menu-section'
 export * from './notification-section'
-export * from './profile-section'
-export * from './search-section'
