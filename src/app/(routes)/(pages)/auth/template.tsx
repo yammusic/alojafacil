@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export default function AuthLayout({ children }: Readonly<Props>) {
+export default function AuthTemplate({ children }: Readonly<Props>) {
   return (
     <Container component="main" maxWidth="sm">
       { children }

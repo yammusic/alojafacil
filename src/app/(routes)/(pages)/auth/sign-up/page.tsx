@@ -1,11 +1,16 @@
 import React from 'react'
+import { redirect } from 'next/navigation'
 import { Divider, Grid, Typography } from '@mui/material'
 
 import { Logo, Link } from '@/app/components'
 import { SignUpForm } from '@/app/containers'
+import { useSession } from '@/domain/hooks'
 import styles from './styles.module.scss'
 
 export default async function SignUp() {
+  const session = useSession()
+  if (session) return redirect('/')
+
   return (
     <Grid container className={ styles.container }>
       <Grid item className={ styles.heading }>
