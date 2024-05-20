@@ -10,6 +10,7 @@ import {
   getRegionData,
   setCities,
   setCountries,
+  setCurrentUser,
   setReady,
   setSidebarMenu,
   setSidebarMenuActive,
@@ -22,6 +23,7 @@ export const useAppState = () => (
   useSelector(({ app }: RootState) => app)
 )
 
+export const appCurrentUser = () => useAppState().currentUser
 export const appCities = () => useAppState().cities
 export const appCountries = () => useAppState().countries
 export const appStates = () => useAppState().states
@@ -33,6 +35,7 @@ export const appSidebarMenuActive = () => useAppState().sidebarMenuActive
 export const useAppActions = () => ({
   ...bindActionCreators({
     appStart,
+    setCurrentUser,
     getRegionData,
     setCities,
     setCountries,

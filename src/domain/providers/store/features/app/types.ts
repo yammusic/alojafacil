@@ -1,12 +1,14 @@
-import type { City, Country, State } from '@/domain/db'
-import type { ChipProps } from '@mui/material'
 import type { ReactElement } from 'react'
+import type { ChipProps } from '@mui/material'
 import type { UrlObject } from 'url'
+
+import type { City, Country, State, User } from '@/domain/db'
 
 /* App State */
 export interface AppState {
   cities: City[]
   countries: Country[]
+  currentUser: User | null
   isReady: boolean
   sidebarMenu: SidebarMenuItem[]
   sidebarMenuActive: string[]

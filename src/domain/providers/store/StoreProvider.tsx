@@ -9,7 +9,7 @@ import type { AppStore } from './shared/types/store'
 import type { StoreProviderProps } from './props-types'
 
 // TODO: Remove for prod
-appPersistor.purge()
+// appPersistor.purge()
 
 export function StoreProvider(props: Readonly<StoreProviderProps>) {
   const {

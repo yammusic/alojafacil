@@ -15,6 +15,8 @@ import {
 
 import type { RootState } from '../../shared/types'
 import type { ThemeState } from './types'
+import type { Theme } from '@mui/material'
+import { useMediaQuery, useTheme } from '@mui/material'
 
 /* Selectors */
 export const useThemeState = (): ThemeState => (

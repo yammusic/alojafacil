@@ -9,6 +9,7 @@ import {
   setCities,
   setCountries,
   setStates,
+  setCurrentUser,
 } from './actions'
 import { sidebarMenu } from './sidebar'
 import type { AppState } from './types'
@@ -16,6 +17,7 @@ import type { AppState } from './types'
 const initialState: AppState = {
   cities: [],
   countries: [],
+  currentUser: null,
   isReady: false,
   sidebarMenu,
   sidebarMenuActive: [],
@@ -23,7 +25,11 @@ const initialState: AppState = {
 }
 
 const persistConfig = {
-  blacklist: [],
+  blacklist: [
+    'isReady',
+    'sidebarMenu',
+    'sidebarMenuActive',
+  ],
   key: 'app',
   storage,
   version: 1,
@@ -37,6 +43,11 @@ export const appSlice = createSlice({
     addCase(setReady, (state, { payload }) => ({
       ...state,
       isReady: payload,
+    }))
+
+    addCase(setCurrentUser, (state, { payload }) => ({
+      ...state,
+      currentUser: payload,
     }))
 
     addCase(setCities, (state, { payload }) => ({

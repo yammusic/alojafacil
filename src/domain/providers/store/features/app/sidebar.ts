@@ -1,26 +1,95 @@
-import { MdDashboard } from 'react-icons/md'
+import { AiOutlineDashboard } from 'react-icons/ai'
+import { BsJournalBookmarkFill } from 'react-icons/bs'
+import { FaHotel, FaKey, FaUsers } from 'react-icons/fa6'
+import { GrDocumentUser } from 'react-icons/gr'
+import { MdLocalHotel } from 'react-icons/md'
+import { TbWorld } from 'react-icons/tb'
+
 import type { SidebarMenuItem } from './types'
 
 export const sidebarMenu: SidebarMenuItem[] = [
   {
-    caption: 'Dashboard',
+    title: 'Dashboard',
+    id: 'dashboard__menu',
+    type: 'group',
     children: [
       {
-        title: 'Dashboard',
-        url: '/admin',
-        icon: MdDashboard,
+        title: 'Default',
+        url: '/admin/dashboard',
+        icon: AiOutlineDashboard,
         id: 'dashboard__item',
         type: 'item',
-      }, {
-        id: 'analytics__item',
-        type: 'collapse',
-        title: 'Analytics',
-        url: '/admin/analytics',
-        icon: MdDashboard,
       },
     ],
-    id: 'dashboard__menu',
-    title: 'Dashboard',
+  },
+  {
+    title: 'Application',
+    id: 'application__menu',
     type: 'group',
+    children: [
+      {
+        title: 'Hotels',
+        url: '/admin/hotels',
+        icon: FaHotel,
+        id: 'hotels__item',
+        type: 'item',
+      },
+      {
+        title: 'Rooms',
+        url: '/admin/rooms',
+        icon: MdLocalHotel,
+        id: 'rooms__item',
+        type: 'item',
+      },
+      {
+        title: 'Reservations',
+        url: '/admin/reservations',
+        icon: BsJournalBookmarkFill,
+        id: 'reservations__item',
+        type: 'item',
+      },
+    ],
+  },
+  {
+    title: 'Users',
+    id: 'users__menu',
+    type: 'group',
+    children: [
+      {
+        title: 'Users',
+        url: '/admin/users',
+        icon: FaUsers,
+        id: 'users__item',
+        type: 'item',
+      },
+      {
+        title: 'Roles',
+        url: '/admin/roles',
+        icon: GrDocumentUser,
+        id: 'roles__item',
+        type: 'item',
+      },
+      {
+        title: 'Sessions',
+        url: '/admin/sessions',
+        icon: FaKey,
+        id: 'sessions__item',
+        type: 'item',
+      },
+    ],
+  },
+  {
+    title: 'Configuration',
+    id: 'configuration__menu',
+    type: 'group',
+    children: [
+      {
+        title: 'Countries',
+        url: '/admin/countries',
+        icon: TbWorld,
+        id: 'countries__item',
+        type: 'item',
+      },
+    ],
   },
 ]
