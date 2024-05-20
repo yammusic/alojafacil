@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useTurso } from '../client'
+import type { User } from './User'
 
 export enum SessionStatus {
   ACTIVE = 'ACTIVE',
@@ -10,16 +11,20 @@ export enum SessionStatus {
 }
 
 export type SessionProps = {
-  accessToken: string
+  accessToken?: string
   status?: SessionStatus
-  userId: number
+  userId?: number
 }
 
 export class Session {
   id: number = 0
+  user: User
+  userId: number = 0
   accessToken: string = ''
   status: SessionStatus = SessionStatus.ACTIVE
-  userId: number = 0
+  createdAt: Date = new Date()
+  updatedAt: Date = new Date()
+
 
   constructor(props: SessionProps) {
     Object.assign(this, props)
@@ -37,11 +42,23 @@ export class Session {
     }
   }
 
-  static async findOne(where: SessionProps) {
+  static async all(where?: SessionProps) {
     const db = useTurso()
 
     try {
-      const session = await db.session.findFirst({ where })
+      const sessions = await db.session.findMany({ where })
+      return sessions.map((session) => new Session(session as SessionProps))
+    } catch (error: any) {
+      console.error(error)
+      return null
+    }
+  }
+
+  static async findOne(where: SessionProps, include?: SessionInclude) {
+    const db = useTurso()
+
+    try {
+      const session = await db.session.findFirst({ where, include })
       if (!session) return null
       return new Session(session as SessionProps)
     } catch (error: any) {
@@ -59,4 +76,8 @@ export class Session {
       update: this,
     })
   }
+}
+
+export interface SessionInclude {
+  user?: boolean
 }

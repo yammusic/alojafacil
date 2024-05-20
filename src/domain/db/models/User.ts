@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { DateTime } from 'luxon'
+
+import { SECRET_KEY } from '@/domain/constants'
 import { decodeJWT, hashPassword, signJWT } from '@/domain/utils'
 import { useTurso } from '../client'
+
 import type { Role } from './Role'
 import type { SessionProps } from './Session'
 import { Session, SessionStatus } from './Session'
-import { DateTime } from 'luxon'
 
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
@@ -65,14 +68,21 @@ export class User {
     }
   }
 
-  save() {
+  async save() {
     const db = useTurso()
 
-    return db.user.upsert({
-      where: { id: this.id },
-      create: this,
-      update: this,
-    })
+    try {
+      return await db.user.upsert({
+        where: { id: this.id },
+        create: this,
+        update: this,
+      })
+    } catch (error: any) {
+      console.error(error)
+      return null
+    } finally {
+      db.$disconnect()
+    }
   }
 
   hasSamePassword(password: string) {
@@ -81,7 +91,7 @@ export class User {
 
   // Sessions
   async getAccessToken() {
-    const secretKey = this.secretKey ?? process.env.SECRET_KEY
+    const secretKey = this.secretKey ?? SECRET_KEY
     const activeSessions = this.sessions.filter((s: any) => s.status === SessionStatus.ACTIVE)
     let activeToken
 
@@ -89,11 +99,14 @@ export class User {
       const { expiredAt } = await decodeJWT(s.accessToken, secretKey)
       const session = new Session(s as SessionProps)
 
-      if (expiredAt < DateTime.now().toMillis()) {
+      if (Number(expiredAt) < DateTime.now().toMillis()) {
         session.status = SessionStatus.EXPIRED
-        await session.save()
+        session.save()
       } else {
-        activeToken = session.accessToken
+        activeToken = {
+          accessToken: session.accessToken,
+          expiredAt,
+        }
         break
       }
     }
@@ -102,11 +115,13 @@ export class User {
   }
 
   async sign() {
-    const secretKey = this.secretKey ?? process.env.SECRET_KEY
-    const activeToken = await this.getAccessToken()
+    const secretKey = this.secretKey ?? SECRET_KEY
+    const { accessToken, expiredAt } = await this.getAccessToken() ?? {}
 
-    if (!activeToken) {
-      const accessToken = await signJWT({
+    if (!accessToken) {
+      const expire = DateTime.now().plus({ 'days': 7 })
+      const token = await signJWT({
+        expiredAt: expire.toMillis(),
         data: {
           id: this.id,
           username: this.username,
@@ -115,23 +130,28 @@ export class User {
         },
       }, secretKey)
 
-      const session = await Session.create({ accessToken, userId: this.id }) as Session
-      console.info('session', { session })
-      // this.sessions.push(session)
-    //   await this.validate()
-    //   await this.save()
-    //   return accessToken
+      const session = await Session.create({
+        accessToken: token,
+        userId: this.id,
+      }) as Session
+
+      this.sessions.push(session)
+
+      return {
+        accessToken: token,
+        expiredAt: expire.toMillis(),
+      }
     }
 
-    return activeToken
+    return { accessToken, expiredAt }
   }
 
   async json() {
-    const accessToken = await this.getAccessToken()
+    const { accessToken } = await this.getAccessToken() ?? {}
     const roles = this.roles.map(({ name }: any) => name)
 
     return {
-      // id: this.id,
+      id: this.id,
       username: this.username,
       email: this.email,
       accessToken,
