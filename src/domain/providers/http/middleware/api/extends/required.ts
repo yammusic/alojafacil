@@ -1,6 +1,6 @@
+import { SessionStatus, getSession, getUserByAccessToken } from '@/domain/db'
+import { isTokenExpired } from '@/domain/utils'
 import { UnauthorizedException } from '../../../exceptions/Unauthorized'
-// import { getUserByAccessToken } from '../../../../../../../infrastructure'
-// import { isTokenExpired } from '../../../../../../Security'
 
 export const validateAccessAuthorization = async (req: Request) => {
   const BEARER = 'Bearer'
@@ -22,15 +22,16 @@ export const validateAccessAuthorization = async (req: Request) => {
     throw err
   }
 
-  // const user = await getUserByAccessToken(accessToken)
-  // if (!user) {
-  //   err.setMessage('Invalid access token')
-  //   throw err
-  // }
+  const user = await getUserByAccessToken(accessToken)
+  if (!user) {
+    err.setMessage('Invalid access token')
+    throw err
+  }
 
-  // const isExpired = isTokenExpired(accessToken, user.secretKey)
-  // if (isExpired) {
-  //   err.setMessage('Access token is expired')
-  //   throw err
-  // }
+  const session = await getSession({ accessToken })
+  const isExpired = await isTokenExpired(accessToken, user.secretKey)
+  if (isExpired || session?.status === SessionStatus.EXPIRED) {
+    err.setMessage('Access token is expired')
+    throw err
+  }
 }
