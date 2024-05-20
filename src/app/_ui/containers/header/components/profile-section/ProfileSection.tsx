@@ -1,124 +1,112 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useRef, useCallback } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTheme } from '@mui/material/styles'
+import type { SyntheticEvent } from 'react'
 import {
   Avatar,
-  Box,
-  Card,
-  CardContent,
+  Button,
   Chip,
+  CircularProgress,
   Divider,
   Grid,
-  InputAdornment,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
-  OutlinedInput,
   Stack,
-  Switch,
   Typography
 } from '@mui/material'
-import PerfectScrollbar from 'react-perfect-scrollbar'
-import { IoSettingsOutline } from 'react-icons/io5'
 
-export function ProfileSection() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5'
+import { RiListSettingsLine } from 'react-icons/ri'
+import { AiOutlineDashboard } from 'react-icons/ai'
+import { FiLogOut } from 'react-icons/fi'
+
+import { appCurrentUser, useAppActions } from '@/domain/providers'
+import { authLogout } from '@/infra/services'
+
+import type { ProfileSectionProps } from './props-types'
+import styles from './styles.module.scss'
+
+
+export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
+  const { palette } = useTheme()
+  const router = useRouter()
+  const currentUser = appCurrentUser()
+  const { setCurrentUser } = useAppActions()
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
+  const anchorRef = useRef(null)
   const open = Boolean(anchorEl)
-  const theme = useTheme()
 
-  const onToggle = useCallback((e: MouseEvent<HTMLElement>) => {
-    setAnchorEl(e.currentTarget)
+  const onToggle = useCallback((e: SyntheticEvent) => {
+    setAnchorEl(e.currentTarget as HTMLElement)
   }, [])
 
   const onClose = useCallback(() => {
     setAnchorEl(null)
   }, [])
 
+  const onLogout = useCallback(async () => {
+    setIsLoading(true)
 
-
-
-
-  const customization = useSelector((state) => state.customization)
-
-  const [sdm, setSdm] = useState(true)
-  const [value, setValue] = useState('')
-  const [notification, setNotification] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-  /**
-   * anchorRef is used on different componets and specifying one type leads to other components throwing an error
-   * */
-  const anchorRef = useRef(null)
-  const handleLogout = async () => {
-    console.log('Logout')
-  }
-
-  const handleListItemClick = (event, index, route = '') => {
-    setSelectedIndex(index)
-    handleClose(event)
-
-    if (route && route !== '') {
-      navigate(route)
+    try {
+      await authLogout({ accessToken: currentUser?.accessToken })
+      setCurrentUser(null)
+      router.push('/')
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+      onClose()
     }
-  }
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen)
-  }
+  }, [])
 
-  const prevOpen = useRef(open)
-  useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus()
-    }
+  if (!currentUser) {
+    return (
+      <>
+        <Link href="/auth/sign-up">
+          <Button className={ styles.authBtn } variant="text">
+            Sign Up
+          </Button>
+        </Link>
 
-    prevOpen.current = open
-  }, [open])
+        <Link href="/auth/sign-in">
+          <Button className={ styles.authBtn } variant="contained">
+            Sign In
+          </Button>
+        </Link>
+      </>
+    )
+  }
 
   return (
     <>
       <Chip
         aria-controls={ open ? 'profile-list-grow' : undefined }
         aria-haspopup="true"
-        color="primary"
-        icon={
-          <Avatar
-            aria-controls={ open ? 'profile-list-grow' : undefined }
-            aria-haspopup="true"
-            color="inherit"
-            ref={ anchorRef }
-            // src={ User1 }
-            sx={ {
-              ...theme.typography.mediumAvatar,
-              margin: '8px 0 8px 8px !important',
-              cursor: 'pointer'
-            } }
-          />
-        }
-        label={ <IoSettingsOutline color={ theme.palette.primary.main } size="1.5rem" /> }
+        className={ styles.chip }
+        icon={ <Avatar className={ styles.avatar } color="inherit" /> }
+        label={ <IoSettingsOutline color={ palette.primary.main } size="1.6rem" /> }
         onClick={ onToggle }
         ref={ anchorRef }
         sx={ {
-          height: '48px',
-          alignItems: 'center',
-          borderRadius: '27px',
-          transition: 'all .2s ease-in-out',
-          borderColor: theme.palette.primary.light,
-          backgroundColor: theme.palette.primary.light,
-
-          '&[aria-controls="menu-list-grow"], &:hover': {
-            borderColor: theme.palette.primary.main,
-            background: `${theme.palette.primary.main}!important`,
-            color: theme.palette.primary.light,
+          '&[aria-controls="profile-list-grow"], &:hover': {
+            borderColor: palette.primary.main,
+            background: `${palette.primary.main} !important`,
+            color: palette.primary.light,
 
             '& svg': {
-              stroke: theme.palette.primary.light
+              stroke: palette.common.white,
             }
           },
 
           '& .MuiChip-label': {
             lineHeight: 0
-          }
+          },
         } }
         variant="outlined"
       />
@@ -126,410 +114,93 @@ export function ProfileSection() {
       <Menu
         PaperProps={ {
           elevation: 0,
+          className: styles.menu,
           sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            width: 330,
             '&::before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
               bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
             },
           },
         } }
         anchorEl={ anchorEl }
         anchorOrigin={ { horizontal: 'right', vertical: 'bottom' } }
         id="profile-menu-list"
-        // onClick={ onClose }
         onClose={ onClose }
         open={ open }
         transformOrigin={ { horizontal: 'right', vertical: 'top' } }
       >
-        <Box sx={ { p: 2 } }>
-          <Stack>
-            <Stack alignItems="center" direction="row" spacing={ 0.5 }>
-              <Typography variant="h4">Good Morning,</Typography>
+        <Grid container>
+          <Grid item p={ 2 } xs={ 12 }>
+            <Stack direction="row" spacing={ 1 }>
+              <Typography variant="h5">Hi,</Typography>
 
-              <Typography component="span" sx={ { fontWeight: 400 } } variant="h4">
-                Johne Doe
+              <Typography variant="h5">
+                { currentUser.username }
               </Typography>
             </Stack>
 
-            <Typography variant="subtitle2">Project Admin</Typography>
-          </Stack>
-
-          <OutlinedInput
-            aria-describedby="search-helper-text"
-            id="input-search-profile"
-            inputProps={ {
-                        'aria-label': 'weight'
-                      } }
-            onChange={ (e) => setValue(e.target.value) }
-            placeholder="Search profile options"
-            startAdornment={
-              <InputAdornment position="start">
-                {/* <IconSearch color={ theme.palette.grey[500] } size="1rem" stroke={ 1.5 } /> */}
-              </InputAdornment>
-                      }
-            sx={ { width: '100%', pr: 1, pl: 2, my: 2 } }
-            value={ value }
-          />
-
-          <Divider />
-        </Box>
-
-        <PerfectScrollbar style={ { height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' } }>
-          <Box sx={ { p: 2 } }>
-            {/* <UpgradePlanCard /> */}
-
-            <Divider />
-
-            <Card
-              sx={ {
-                bgcolor: theme.palette.primary.light,
-                my: 2
-              } }
+            <Typography
+              color={ palette.grey[600] }
+              fontSize={ 13 }
+              ml={ 0.25 }
+              variant="subtitle2"
             >
-              <CardContent>
-                <Grid container direction="column" spacing={ 3 }>
-                  <Grid item>
-                    <Grid
-                      container
-                      item
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Grid item>
-                        <Typography variant="subtitle1">Start DND Mode</Typography>
-                      </Grid>
+              { currentUser.roles.join(', ') }
+            </Typography>
+          </Grid>
 
-                      <Grid item>
-                        <Switch
-                          checked={ sdm }
-                          color="primary"
-                          name="sdm"
-                          onChange={ (e) => setSdm(e.target.checked) }
-                          size="small"
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-
-                  <Grid item>
-                    <Grid
-                      container
-                      item
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Grid item>
-                        <Typography variant="subtitle1">Allow Notifications</Typography>
-                      </Grid>
-
-                      <Grid item>
-                        <Switch
-                          checked={ notification }
-                          name="sdm"
-                          onChange={ (e) => setNotification(e.target.checked) }
-                          size="small"
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-
+          <Grid item xs={ 12 }>
             <Divider />
+          </Grid>
+        </Grid>
 
-            <List
-              component="nav"
-              sx={ {
-                width: '100%',
-                maxWidth: 350,
-                minWidth: 300,
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: '10px',
-                [theme.breakpoints.down('md')]: {
-                  minWidth: '100%'
-                },
-                '& .MuiListItemButton-root': {
-                  mt: 0.5
-                }
-              } }
-            >
-              <ListItemButton
-                onClick={ (event) => handleListItemClick(event, 0, '#') }
-                selected={ selectedIndex === 0 }
-                // sx={ { borderRadius: `${customization.borderRadius}px` } }
-              >
-                <ListItemIcon>
-                  {/* <IconSettings size="1.3rem" stroke={ 1.5 } /> */}
-                </ListItemIcon>
+        <Grid item xs={ 12 }>
+          <List>
+            {/* Dashboard */}
+            <ListItemButton LinkComponent={ Link } href={ !admin ? '/admin' : '/' }>
+              <ListItemIcon className={ styles.icon }>
+                { !admin ? (
+                  <AiOutlineDashboard size={ 18 } />
+                ) : (
+                  <IoHomeOutline size={ 18 } />
+                ) }
+              </ListItemIcon>
 
-                <ListItemText primary={ <Typography variant="body2">Account Settings</Typography> } />
-              </ListItemButton>
+              <ListItemText>
+                <Typography variant="body2">
+                  { !admin ? 'Dashboard' : 'Home' }
+                </Typography>
+              </ListItemText>
+            </ListItemButton>
 
-              <ListItemButton
-                onClick={ (event) => handleListItemClick(event, 1, '#') }
-                selected={ selectedIndex === 1 }
-                // sx={ { borderRadius: `${customization.borderRadius}px` } }
-              >
-                <ListItemIcon>
-                  {/* <IconUser size="1.3rem" stroke={ 1.5 } /> */}
-                </ListItemIcon>
+            {/* Account Settings */}
+            <ListItemButton>
+              <ListItemIcon className={ styles.icon }>
+                <RiListSettingsLine size={ 18 } />
+              </ListItemIcon>
 
-                <ListItemText
-                  primary={
-                    <Grid container justifyContent="space-between" spacing={ 1 }>
-                      <Grid item>
-                        <Typography variant="body2">Social Profile</Typography>
-                      </Grid>
+              <ListItemText>
+                <Typography variant="body2">Account Settings</Typography>
+              </ListItemText>
+            </ListItemButton>
 
-                      <Grid item>
-                        <Chip
-                          label="02"
-                          size="small"
-                          sx={ {
-                            bgcolor: theme.palette.warning.dark,
-                            color: theme.palette.background.default
-                          } }
-                        />
-                      </Grid>
-                    </Grid>
-                            }
-                />
-              </ListItemButton>
+            {/* Logout */}
+            <ListItemButton disabled={ isLoading } onClick={ onLogout }>
+              <ListItemIcon className={ styles.icon }>
+                <FiLogOut size={ 18 } />
+              </ListItemIcon>
 
-              <ListItemButton
-                onClick={ handleLogout }
-                selected={ selectedIndex === 4 }
-                // sx={ { borderRadius: `${customization.borderRadius}px` } }
-              >
-                <ListItemIcon>
-                  {/* <IconLogout size="1.3rem" stroke={ 1.5 } /> */}
-                </ListItemIcon>
+              <ListItemText className={ styles.label }>
+                { isLoading ? (
+                  <CircularProgress className={ styles.loader } size={ 16 } />
+                ) : (
+                  <Typography variant="body2">Logout</Typography>
+                ) }
+              </ListItemText>
+            </ListItemButton>
+          </List>
+        </Grid>
 
-                <ListItemText primary={ <Typography variant="body2">Logout</Typography> } />
-              </ListItemButton>
-            </List>
-          </Box>
-        </PerfectScrollbar>
       </Menu>
-
-      {/* <Popper
-        disablePortal
-        transition
-        anchorEl={ anchorRef.current }
-        open={ open }
-        placement="bottom-end"
-        popperOptions={ {
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 14]
-              }
-            }
-          ]
-        } }
-        role={ undefined }
-      >
-        {({ TransitionProps }) => (
-          <Transitions in={ open } { ...TransitionProps }>
-            <Paper>
-              <ClickAwayListener onClickAway={ handleClose }>
-                <MainCard
-                  boxShadow
-                  border={ false }
-                  content={ false }
-                  elevation={ 16 }
-                  shadow={ theme.shadows[16] }
-                >
-                  <Box sx={ { p: 2 } }>
-                    <Stack>
-                      <Stack alignItems="center" direction="row" spacing={ 0.5 }>
-                        <Typography variant="h4">Good Morning,</Typography>
-
-                        <Typography component="span" sx={ { fontWeight: 400 } } variant="h4">
-                          Johne Doe
-                        </Typography>
-                      </Stack>
-
-                      <Typography variant="subtitle2">Project Admin</Typography>
-                    </Stack>
-
-                    <OutlinedInput
-                      aria-describedby="search-helper-text"
-                      id="input-search-profile"
-                      inputProps={ {
-                        'aria-label': 'weight'
-                      } }
-                      onChange={ (e) => setValue(e.target.value) }
-                      placeholder="Search profile options"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <IconSearch color={ theme.palette.grey[500] } size="1rem" stroke={ 1.5 } />
-                        </InputAdornment>
-                      }
-                      sx={ { width: '100%', pr: 1, pl: 2, my: 2 } }
-                      value={ value }
-                    />
-
-                    <Divider />
-                  </Box>
-
-                  <PerfectScrollbar style={ { height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' } }>
-                    <Box sx={ { p: 2 } }>
-                      <UpgradePlanCard />
-
-                      <Divider />
-
-                      <Card
-                        sx={ {
-                          bgcolor: theme.palette.primary.light,
-                          my: 2
-                        } }
-                      >
-                        <CardContent>
-                          <Grid container direction="column" spacing={ 3 }>
-                            <Grid item>
-                              <Grid
-                                container
-                                item
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">Start DND Mode</Typography>
-                                </Grid>
-
-                                <Grid item>
-                                  <Switch
-                                    checked={ sdm }
-                                    color="primary"
-                                    name="sdm"
-                                    onChange={ (e) => setSdm(e.target.checked) }
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-
-                            <Grid item>
-                              <Grid
-                                container
-                                item
-                                alignItems="center"
-                                justifyContent="space-between"
-                              >
-                                <Grid item>
-                                  <Typography variant="subtitle1">Allow Notifications</Typography>
-                                </Grid>
-
-                                <Grid item>
-                                  <Switch
-                                    checked={ notification }
-                                    name="sdm"
-                                    onChange={ (e) => setNotification(e.target.checked) }
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-
-                      <Divider />
-
-                      <List
-                        component="nav"
-                        sx={ {
-                          width: '100%',
-                          maxWidth: 350,
-                          minWidth: 300,
-                          backgroundColor: theme.palette.background.paper,
-                          borderRadius: '10px',
-                          [theme.breakpoints.down('md')]: {
-                            minWidth: '100%'
-                          },
-                          '& .MuiListItemButton-root': {
-                            mt: 0.5
-                          }
-                        } }
-                      >
-                        <ListItemButton
-                          onClick={ (event) => handleListItemClick(event, 0, '#') }
-                          selected={ selectedIndex === 0 }
-                          sx={ { borderRadius: `${customization.borderRadius}px` } }
-                        >
-                          <ListItemIcon>
-                            <IconSettings size="1.3rem" stroke={ 1.5 } />
-                          </ListItemIcon>
-
-                          <ListItemText primary={ <Typography variant="body2">Account Settings</Typography> } />
-                        </ListItemButton>
-
-                        <ListItemButton
-                          onClick={ (event) => handleListItemClick(event, 1, '#') }
-                          selected={ selectedIndex === 1 }
-                          sx={ { borderRadius: `${customization.borderRadius}px` } }
-                        >
-                          <ListItemIcon>
-                            <IconUser size="1.3rem" stroke={ 1.5 } />
-                          </ListItemIcon>
-
-                          <ListItemText
-                            primary={
-                              <Grid container justifyContent="space-between" spacing={ 1 }>
-                                <Grid item>
-                                  <Typography variant="body2">Social Profile</Typography>
-                                </Grid>
-
-                                <Grid item>
-                                  <Chip
-                                    label="02"
-                                    size="small"
-                                    sx={ {
-                                      bgcolor: theme.palette.warning.dark,
-                                      color: theme.palette.background.default
-                                    } }
-                                  />
-                                </Grid>
-                              </Grid>
-                            }
-                          />
-                        </ListItemButton>
-
-                        <ListItemButton
-                          onClick={ handleLogout }
-                          selected={ selectedIndex === 4 }
-                          sx={ { borderRadius: `${customization.borderRadius}px` } }
-                        >
-                          <ListItemIcon>
-                            <IconLogout size="1.3rem" stroke={ 1.5 } />
-                          </ListItemIcon>
-
-                          <ListItemText primary={ <Typography variant="body2">Logout</Typography> } />
-                        </ListItemButton>
-                      </List>
-                    </Box>
-                  </PerfectScrollbar>
-                </MainCard>
-              </ClickAwayListener>
-            </Paper>
-          </Transitions>
-        )}
-      </Popper> */}
     </>
   )
 }

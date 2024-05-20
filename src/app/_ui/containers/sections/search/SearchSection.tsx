@@ -4,11 +4,11 @@ import React from 'react'
 import { Box, Button, Container, Divider, Grid, InputAdornment, useTheme } from '@mui/material'
 import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
 import { DatePicker } from '@mui/x-date-pickers'
+import { MdSearch } from 'react-icons/md'
 
 import { ClearIcon, SearchIcon } from '../../../components/common'
 import type { SearchSectionProps } from './props-types'
 import styles from './styles.module.scss'
-import { MdSearch } from 'react-icons/md'
 
 export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
   const { palette } = useTheme()

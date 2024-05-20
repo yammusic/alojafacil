@@ -27,22 +27,22 @@ const HOTELS = [
     image: '/images/bogota.webp',
   },
   {
-    name: 'NH Collection Bogotá WTC Royal',
+    name: 'NH Collection Bogotá WTC Royal 2',
     location: 'Bogotá, Colombia',
     image: 'https://images.trvl-media.com/lodging/1000000/10000/2400/2321/706f3d74.jpg?impolicy=fcrop&w=469&h=201&p=1&q=medium',
   },
   {
-    name: 'Hotel Casa Canabal',
+    name: 'Hotel Casa Canabal 2',
     location: 'Cartagena, Colombia',
     image: 'https://images.trvl-media.com/lodging/5000000/4200000/4192700/4192674/30f56c65.jpg?impolicy=resizecrop&rw=455&ra=fit',
   },
   {
-    name: 'Medellín',
+    name: 'Medellín 2',
     location: 'Colombia',
     image: '/images/medellin.webp',
   },
   {
-    name: 'Bogotá',
+    name: 'Bogotá 2',
     location: 'Colombia',
     image: '/images/bogota.webp',
   },

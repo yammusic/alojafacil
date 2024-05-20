@@ -1,14 +1,17 @@
 'use client'
 
 import React from 'react'
-import { AppBar, Box, Button, Container, Stack, Toolbar, useTheme } from '@mui/material'
-
 import {
-  LogoSection,
-} from './components'
+  AppBar,
+  Box,
+  Container,
+  Stack,
+  Toolbar,
+  useTheme,
+} from '@mui/material'
 
+import { LogoSection, ProfileSection } from './components'
 import styles from './styles.module.scss'
-import Link from 'next/link'
 
 export function Header() {
   const { palette } = useTheme()
@@ -16,10 +19,10 @@ export function Header() {
   return (
     <AppBar
       className={ styles.header }
-      elevation={ 0 }
+      elevation={ 1 }
       sx={ {
         bgcolor: palette.background.default,
-        borderBottomColor: palette.divider,
+        // borderBottomColor: palette.divider,
       } }
     >
       <Container>
@@ -36,15 +39,7 @@ export function Header() {
             {/* Locale */}
             {/* <LocaleSection /> */}
 
-            <Link href="/auth/sign-up">
-              <Button sx={ { textTransform: 'capitalize' } } variant="text">Sign Up</Button>
-            </Link>
-
-            <Link href="/auth/sign-in">
-              <Button sx={ { textTransform: 'capitalize' } } variant="contained">Sign In</Button>
-            </Link>
-
-            {/* <ProfileSection /> */}
+            <ProfileSection />
           </Stack>
         </Toolbar>
       </Container>

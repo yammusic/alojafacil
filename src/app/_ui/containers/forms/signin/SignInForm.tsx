@@ -5,14 +5,18 @@ import { useRouter } from 'next/navigation'
 import { FormContainer, useForm } from 'react-hook-form-mui'
 import { Alert, Box } from '@mui/material'
 
+import { User } from '@/domain/db'
+import { useAppActions } from '@/domain/providers'
+import { authLogin } from '@/infra/services'
 import { UsernameField, PasswordField, ActionsForm } from './components'
+
 import type { SignInFormValues } from './props-types'
 import styles from './styles.module.scss'
-import { authLogin } from '@/infra/services/auth/login'
 
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { setCurrentUser } = useAppActions()
   const router = useRouter()
 
   const formCtx = useForm<SignInFormValues>({
@@ -27,8 +31,8 @@ export function SignInForm() {
     setIsLoading(true)
 
     try {
-      const { content: { message, user } } = await authLogin(data)
-      console.info({ message, user })
+      const { content: { user } } = await authLogin(data)
+      setCurrentUser(new User(user))
       router.push('/')
     } catch (err: any) {
       const msg = err?.response?.data?.content?.message ?? err.message
