@@ -1,3 +1,5 @@
+'use client'
+
 import { createAction } from '@reduxjs/toolkit'
 import type { SidebarMenuItem } from './types'
 import type { City, Country, State, User } from '@/domain/db'

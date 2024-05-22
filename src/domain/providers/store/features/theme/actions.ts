@@ -1,3 +1,5 @@
+'use client'
+
 import { createAction } from '@reduxjs/toolkit'
 import type { ThemeColorMode } from '@/domain/providers'
 

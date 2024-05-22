@@ -1,4 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+'use client'
+
 import { useSelector } from 'react-redux'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import merge from 'deepmerge'

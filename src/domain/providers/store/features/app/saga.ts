@@ -1,3 +1,5 @@
+'use client'
+
 import type { CallEffect, PutEffect } from 'redux-saga/effects'
 import { call, fork, put, takeLatest } from 'redux-saga/effects'
 import type { AnyAction } from 'redux-saga'

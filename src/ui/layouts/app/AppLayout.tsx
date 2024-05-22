@@ -1,13 +1,13 @@
-'use client'
-
 import React from 'react'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import '@/domain/polyfills'
 
-import { StoreProvider, ThemeProvider } from '@/domain/providers'
+import {
+  LocalizationProvider,
+  StoreProvider,
+  ThemeProvider,
+} from '@/domain/providers'
 import { TopLoader } from '@/app/containers'
-
+import { isDev } from '@/domain/utils'
 import type { AppLayoutProps } from './props-types'
 import '@/app/styles/globals.scss'
 
@@ -15,9 +15,9 @@ export function AppLayout({ children }: Readonly<AppLayoutProps>) {
   return (
     <html lang="en">
       <body suppressHydrationWarning>
-        <StoreProvider>
+        <StoreProvider isDev={ isDev() }>
           <ThemeProvider>
-            <LocalizationProvider dateAdapter={ AdapterLuxon }>
+            <LocalizationProvider>
               <TopLoader />
 
               { children }

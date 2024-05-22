@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -34,7 +36,7 @@ import styles from './styles.module.scss'
 export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
   const { palette } = useTheme()
   const router = useRouter()
-  const currentUser = appCurrentUser()
+  const currentUser = appCurrentUser() as any
   const { setCurrentUser } = useAppActions()
 
   const [isLoading, setIsLoading] = useState(false)

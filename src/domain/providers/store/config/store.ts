@@ -1,22 +1,27 @@
-import type { ConfigureStoreOptions } from '@reduxjs/toolkit'
+'use client'
+
 import { configureStore } from '@reduxjs/toolkit'
 import { persistStore } from 'redux-persist'
+import createSagaMiddleware from 'redux-saga'
+import loggerMiddleware from 'redux-logger'
 
-import { isDev } from '@/domain/utils'
-import { rootReducer } from './reducers'
-import { useMiddleware, sagaMiddleware } from './middlewares'
+import { rootReducer as reducer } from './reducers'
 import { rootSaga } from './sagas'
+import type { MakeStoreOptions } from '../shared'
 
-export const makeStore = () => {
-  // Get config options
-  const [middleware, reducer] = [
-    useMiddleware as ConfigureStoreOptions['middleware'],
-    rootReducer as ConfigureStoreOptions['reducer'],
-  ]
+export const makeStore = (opts: MakeStoreOptions = {}) => {
+  const { isDev = false } = opts
+
+  const sagaMiddleware = createSagaMiddleware()
+  const middleware = (getDefaultMiddleware: any) => {
+    const middlewares: any[] = [sagaMiddleware]
+    if (isDev) middlewares.push(loggerMiddleware)
+    return getDefaultMiddleware({ serializableCheck: false }).concat(...middlewares)
+  }
 
   // Create store
   const store = configureStore({
-    devTools: isDev() && { trace: true },
+    devTools: isDev && { trace: true },
     middleware,
     reducer,
   })
@@ -29,5 +34,3 @@ export const makeStore = () => {
 
   return { store, persistor }
 }
-
-export const { store, persistor } = makeStore()

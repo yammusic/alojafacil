@@ -1,3 +1,5 @@
+'use client'
+
 import { fork } from 'redux-saga/effects'
 // import type { AnyAction } from 'redux-saga'
 

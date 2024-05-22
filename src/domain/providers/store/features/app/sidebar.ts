@@ -1,3 +1,5 @@
+'use client'
+
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { BsJournalBookmarkFill } from 'react-icons/bs'
 import { FaHotel, FaKey, FaUsers } from 'react-icons/fa6'
