@@ -2,10 +2,10 @@ import React from 'react'
 import { redirect } from 'next/navigation'
 import { Divider, Grid, Typography } from '@mui/material'
 
-import styles from './styles.module.scss'
 import { Logo, Link } from '@/app/components'
 import { SignInForm } from '@/app/containers'
 import { useSession } from '@/domain/hooks'
+import styles from './styles.module.scss'
 
 export default async function SignIn() {
   const session = useSession()

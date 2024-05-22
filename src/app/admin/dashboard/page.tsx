@@ -1,6 +1,6 @@
+import React from 'react'
 import { redirect } from 'next/navigation'
 import { useSession } from '@/domain/hooks'
-import React from 'react'
 
 export default function Dashboard() {
   const session = useSession()
