@@ -19,6 +19,16 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Build Next.js project
+        run: npm run build
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -29,12 +39,12 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
-          api_location: "/api" # Api source code path - optional
-          output_location: "" # Built app content directory - optional
+          api_location: "" # Api source code path - optional
+          output_location: ".next" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-        env:
-          PRE_BUILD_COMMAND: npm install -g prisma
-          POST_BUILD_COMMAND: npm install @prisma/client
+        # env:
+        #   PRE_BUILD_COMMAND: npm install -g prisma
+        #   POST_BUILD_COMMAND: npm install @prisma/client
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
