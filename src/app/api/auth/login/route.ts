@@ -34,10 +34,7 @@ export async function POST(req: Request) {
 
     setCookie('session', accessToken, {
       cookies,
-      httpOnly: true,
-      secure: true,
       expires: new Date(Number(expiredAt)),
-      sameSite: 'lax',
       path: '/',
     })
 
