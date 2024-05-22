@@ -50,7 +50,7 @@ export class Country {
     const db = useTurso()
 
     try {
-      const country = await db.country.create({ data: props })
+      const country = await db.country.create({ data: props as any })
       return new Country(country as CountryProps)
     } catch (error: any) {
       console.error(error)

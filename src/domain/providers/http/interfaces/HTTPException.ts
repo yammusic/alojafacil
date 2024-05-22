@@ -1,4 +1,9 @@
-import type { ResponseContentType, ResponseHeadersType, ResponseStatusType } from './HTTPResponse'
+import type {
+  ApiResponse,
+  ResponseContentType,
+  ResponseHeadersType,
+  ResponseStatusType,
+} from './HTTPResponse'
 import { StatusCode } from './HTTPStatus'
 
 export interface ApiExceptionValues {
@@ -28,6 +33,7 @@ export class ApiException<P =| AnyProps, V =| Values, R =| Response> {
     this.headers = headers
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public _getDefaultValues(props?: P): V {
     const code = StatusCode.INTERNAL_SERVER_ERROR
     const reason = StatusCode[code]

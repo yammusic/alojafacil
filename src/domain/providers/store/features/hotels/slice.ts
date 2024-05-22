@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import persistReducer from 'redux-persist/es/persistReducer'
-import storage from 'redux-persist/lib/storage'
+// import persistReducer from 'redux-persist/es/persistReducer'
+// import storage from 'redux-persist/lib/storage'
 
 import {
   setHotels,
@@ -11,12 +11,12 @@ const initialState: HotelsState = {
   hotels: [],
 }
 
-const persistConfig = {
-  blacklist: [],
-  key: 'hotels',
-  storage,
-  version: 1,
-}
+// const persistConfig = {
+//   blacklist: [],
+//   key: 'hotels',
+//   storage,
+//   version: 1,
+// }
 
 export const hotelsSlice = createSlice({
   name: 'hotels',

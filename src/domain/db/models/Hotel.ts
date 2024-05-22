@@ -121,8 +121,8 @@ export class Hotel {
 
     return db.hotel.upsert({
       where: { id: this.id },
-      create: this,
-      update: this,
+      create: this as any,
+      update: this as any,
     })
   }
 }

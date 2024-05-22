@@ -1,9 +1,8 @@
-import type { TypographyOptions } from '@mui/material/styles/createTypography'
-import type { PaletteOptions, ThemeOptionsProps, ThemeTypography } from '../types'
+import type { ThemeOptionsProps, ThemeTypography } from '../types'
 import { useThemeTypographyVariant, useTypographyVariants } from './helpers'
 
 export const useThemeTypography = (palette: ThemeOptionsProps): ThemeTypography => {
-  const { colorMode, fontFamily, typography } = palette
+  const { fontFamily, typography } = palette
 
   const styles = new Map()
   const variants = useTypographyVariants()

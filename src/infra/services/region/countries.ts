@@ -1,8 +1,7 @@
 import axios from 'axios'
-import useSWR from 'swr'
+// import useSWR from 'swr'
 
 import type { Country, State } from '@/domain/db'
-import { useAppActions } from '@/domain/providers'
 
 interface Response {
   content: {

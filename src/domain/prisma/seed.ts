@@ -1,9 +1,9 @@
-import { seedCitites } from './seeds/cities'
-import { seedCountries } from './seeds/countries'
-import { seedHotels } from './seeds/hotels'
-import { seedRoles } from './seeds/roles'
-import { seedStates } from './seeds/states'
-import { seedUsers } from './seeds/users'
+// import { seedCitites } from './seeds/cities'
+// import { seedCountries } from './seeds/countries'
+// import { seedHotels } from './seeds/hotels'
+// import { seedRoles } from './seeds/roles'
+// import { seedStates } from './seeds/states'
+// import { seedUsers } from './seeds/users'
 
 async function seed() {
   console.log('Starting seeding...')

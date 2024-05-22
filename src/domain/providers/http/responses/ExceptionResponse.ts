@@ -38,7 +38,7 @@ export const responseApiException = (res: Response, exception: AnyException) => 
   const { headers, ...response } = err.getResponse()
 
   if (headers) {
-    headers.forEach((value, key) => {
+    headers.forEach((value: string, key: string) => {
       res.next().headers.set(key, value)
     })
   }

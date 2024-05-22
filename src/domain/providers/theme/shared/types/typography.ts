@@ -1,4 +1,4 @@
-import type { TypographyOptions, TypographyStyleOptions } from '@mui/material/styles/createTypography'
+import type { TypographyOptions } from '@mui/material/styles/createTypography'
 
 /* Theme typography type */
 export interface ThemeTypography extends TypographyOptions {

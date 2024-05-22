@@ -16,7 +16,7 @@ export const makeStore = () => {
 
   // Create store
   const store = configureStore({
-    devTools: isDev && { trace: true },
+    devTools: isDev() && { trace: true },
     middleware,
     reducer,
   })

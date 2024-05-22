@@ -26,7 +26,7 @@ export class City {
     const db = useTurso()
 
     try {
-      const city = await db.city.create({ data: props })
+      const city = await db.city.create({ data: props as any })
       return new City(city as CityProps)
     } catch (error: any) {
       console.error(error)

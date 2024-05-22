@@ -1,9 +1,5 @@
 import type {
-  Color,
-  CommonColors,
   PaletteColorOptions,
-  TypeBackground,
-  TypeText,
 } from '@mui/material'
 
 import { useThemePaletteColor, useThemePaletteColorVariants } from './colors'

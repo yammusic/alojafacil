@@ -26,7 +26,7 @@ export class State {
     const db = useTurso()
 
     try {
-      const state = await db.state.create({ data: props })
+      const state = await db.state.create({ data: props as any })
       return new State(state as StateProps)
     } catch (error: any) {
       console.error(error)

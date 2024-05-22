@@ -30,7 +30,7 @@ export const useThemeTypographyVariant = <T extends TypographyType>(variant: Var
   const isDark = (colorMode === 'dark')
 
   const variants = useTypographyVariants()
-  const colorsMap = new Map<string, string>(Object.entries({ ...typography }))
+  const colorsMap = new Map<string, string>(Object.entries(typography as any))
   const typographyMap = new Map<string, string>()
   const typographyDark = new Map<string, string>()
 
@@ -64,5 +64,5 @@ export const useThemeTypographyVariant = <T extends TypographyType>(variant: Var
 
   return ({
     ...Object.fromEntries(typographyMap.entries())
-  }) as T
+  }) as T | any
 }
