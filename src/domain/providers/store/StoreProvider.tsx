@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useMemo, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { makeStore } from './config/store'
+import { persistor as appPersistor, store as appStore } from './config/store'
 import type { AppStore } from './shared/types/store'
 import type { StoreProviderProps } from './props-types'
 
@@ -14,24 +14,20 @@ import type { StoreProviderProps } from './props-types'
 export function StoreProvider(props: Readonly<StoreProviderProps>) {
   const {
     children,
-    isDev = false,
-    // store = appStore,
-    // persistor = appPersistor,
+    // isDev = false,
+    store = appStore,
+    persistor = appPersistor,
   } = props
 
   const storeRef = useRef<AppStore>()
-  const { store, persistor } = useMemo(() => makeStore({ isDev }), [])
-
   if (!storeRef.current) {
     storeRef.current = store
   }
-
 
   return (
     <Provider store={ storeRef.current }>
       <PersistGate loading={ null } persistor={ persistor }>
         { children }
-
       </PersistGate>
     </Provider>
   )

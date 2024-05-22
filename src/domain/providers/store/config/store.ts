@@ -34,3 +34,7 @@ export const makeStore = (opts: MakeStoreOptions = {}) => {
 
   return { store, persistor }
 }
+
+export const useStore = (isDev: boolean = false) => makeStore({ isDev })
+
+export const { store, persistor } = makeStore()

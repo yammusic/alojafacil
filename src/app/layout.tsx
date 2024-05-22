@@ -12,7 +12,7 @@ interface Props {
   children: ReactNode
 }
 
-export default function PageLayout({ children }: Readonly<Props>) {
+export default function MainLayout({ children }: Readonly<Props>) {
   return (
     <AppLayout>
       { children }

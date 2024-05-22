@@ -8,6 +8,7 @@ import {
 } from '@/domain/providers'
 import { TopLoader } from '@/app/containers'
 import { isDev } from '@/domain/utils'
+
 import type { AppLayoutProps } from './props-types'
 import '@/app/styles/globals.scss'
 
