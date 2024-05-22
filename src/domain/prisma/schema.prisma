@@ -38,19 +38,22 @@ model UserInfo {
   id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [userId], references: [id])
   userId          Int       @unique
+  cityId          Int?
+  countryId       Int?
   firstName       String
   lastName        String
+  avatar          String?
+  gender          String
   dateOfBirth     DateTime
   phoneNumber     String
   documentType    String
   documentNumber  String
   address         String?
-  city            City      @relation(fields: [cityId], references: [id])
-  cityId          Int
-  country         Country   @relation(fields: [countryId], references: [id])
-  countryId       Int
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  city            City?      @relation(fields: [cityId], references: [id])
+  country         Country?   @relation(fields: [countryId], references: [id])
 
   @@map("user_info")
 }
@@ -102,7 +105,7 @@ model Country {
 
   states          State[]
   UserInfo        UserInfo[]  @ignore
-  Hotels          Hotel[]     @ignore
+  Hotels          Hotel[]
 
   @@map("countries")
 }
@@ -115,7 +118,7 @@ model State {
 
   country    Country @relation(fields: [countryId], references: [id])
   cities     City[]
-  Hotels     Hotel[]     @ignore
+  Hotels     Hotel[]
 
   @@map("states")
 }
@@ -129,7 +132,7 @@ model City {
 
   state     State      @relation(fields: [stateId], references: [id])
   UserInfo  UserInfo[] @ignore
-  Hotels    Hotel[]    @ignore
+  Hotels    Hotel[]
 
   @@map("cities")
 }
@@ -151,10 +154,9 @@ model Hotel {
   images      String
   available   Boolean      @default(true)
   rating      Float?
-  policies    String?
   amenities   String?
-  facilities  String?
-  services    String?
+  policies    String?
+  features    String?
   payments    String?
   status      String       @default("ACTIVE")
   createdAt   DateTime     @default(now())
@@ -173,18 +175,21 @@ model Hotel {
 model Room {
   id          Int       @id @default(autoincrement())
   hotelId     Int
-  roomNumber  String
   type        String
   description String?
   basePrice   Float
   taxes       Float
+  discount    Float?
   location    String
   picture     String
   images      String
   available   Boolean   @default(true)
+  beds        Int       @default(1)
   bathrooms   Int       @default(1)
   capacity    Int       @default(1)
-  services    String?
+  amenities   String?
+  features    String?
+  payments    String?
   status      String    @default("ACTIVE")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt

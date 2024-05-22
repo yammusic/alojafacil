@@ -17,7 +17,7 @@ export function MenuGroup({ item }: Readonly<MenuGroupProps>) {
     <>
       <List
         subheader={
-          (item.title && !isSmallDrawer) ? (
+          (!!item.title && !isSmallDrawer) && (
             <Typography gutterBottom variant="subtitle2">
               { item.title }
 
@@ -27,7 +27,7 @@ export function MenuGroup({ item }: Readonly<MenuGroupProps>) {
                 </Typography>
               ) : null }
             </Typography>
-          ) : null
+          )
         }
       >
         { item.children?.map((menu) => {

@@ -33,17 +33,13 @@ export interface StatesResponse extends Response {
 export const fetchCountries = async () => {
   const url = '/api/region/countries'
   const { data } = await axios.get<CountriesResponse>(url)
-
-  // const { setCountries } = useAppActions()
-  // setCountries(data.content.data)
-
   return data
 }
 
-export const fetchCountriesSWR = async () => {
-  const data = useSWR('/api/region/countries', fetchCountries)
-  return data
-}
+// export const fetchCountriesSWR = async () => {
+//   const data = useSWR('/api/region/countries', fetchCountries)
+//   return data
+// }
 
 export const fetchStates = async (countryId: number) => {
   const url = `/api/region/states?countryId=${countryId}`

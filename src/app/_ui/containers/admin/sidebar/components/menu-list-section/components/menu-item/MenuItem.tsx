@@ -1,68 +1,87 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   ListItemButton,
   ListItemText,
+  Tooltip,
+  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material'
 
+import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
 import {
   appSidebarMenuActive,
   themeBorderRadius,
+  themeDrawerWidth,
   useAppActions,
   useThemeActions,
 } from '@/domain/providers'
 
 import { MenuItemIcon } from './item-icon/MenuItemIcon'
 import { MenuItemTitle } from './item-title/MenuItemTitle'
-import { MenuItemCaption } from './item-caption/MenuItemCaption'
+// import { MenuItemCaption } from './item-caption/MenuItemCaption'
 import type { MenuItemProps } from './props-types'
+import styles from './styles.module.scss'
 
 export function MenuItem({ item, level }: Readonly<MenuItemProps>) {
   const { breakpoints } = useTheme()
   const matchDownLg = useMediaQuery(breakpoints.down('lg'))
+
+  const { setDrawerWidth } = useThemeActions()
+  const drawerWidth = themeDrawerWidth()
+  const isSmallDrawer = useMemo(() => drawerWidth == DRAWER_WIDTH_SMALL, [drawerWidth])
+
   const pathname = usePathname()
   const isSelected = pathname === item.url
 
-  const { setSidebarMenuActive } = useAppActions()
-  const { setDrawerOpen } = useThemeActions()
-  const itemsActive = appSidebarMenuActive()
-
-  const onItemPress = useCallback((id: string) => {
-    setSidebarMenuActive(itemsActive.filter((item) => item !== id))
-    if (matchDownLg) { setDrawerOpen(false) }
-  }, [itemsActive, matchDownLg])
+  const onItemPress = useCallback(() => {
+    if (matchDownLg && !isSmallDrawer) {
+      setDrawerWidth(DRAWER_WIDTH_SMALL)
+    }
+  }, [matchDownLg, isSmallDrawer])
 
   return (
-    <ListItemButton
-      disabled={ item.disabled }
-      onClick={ () => onItemPress(item.id) }
-      selected={ isSelected }
-      sx={ {
-        mb: 0.5,
-        alignItems: 'flex-start',
-        backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
-        py: level > 1 ? 1 : 1.25,
-        pl: `${level * 24}px`
-      } }
+    <Tooltip
+      disableFocusListener={ !isSmallDrawer }
+      disableHoverListener={ !isSmallDrawer }
+      disableTouchListener={ !isSmallDrawer }
+      placement="right"
+      title={ item.title }
     >
-      <Link
-        passHref
-        href={ item.url || '#' }
-        style={ { display: 'flex', flexDirection: 'row', width: '100%' } }
+      <ListItemButton
+        LinkComponent={ Link }
+        className={ styles.listItem }
+        disabled={ item.disabled }
+        href={ item.url ?? '#' }
+        onClick={ onItemPress }
+        selected={ isSelected }
+        sx={ {
+          pl: isSmallDrawer ? '0.6rem !important' : `${level * 24}px !important`,
+          pr: isSmallDrawer ? '0.6rem !important' : '1rem !important',
+          color: isSelected ? 'secondary.dark' : 'inherit',
+          backgroundColor: isSelected ? 'var(--secondary-light-bg-color) !important' : 'transparent',
+        } }
         target={ item.target }
       >
-        <MenuItemIcon icon={ item.icon } level={ level } />
+        <MenuItemIcon
+          icon={ item.icon }
+          level={ level }
+        />
 
-        <ListItemText>
-          <MenuItemTitle
-            selected={ isSelected }
-            title={ item.title }
-          />
-        </ListItemText>
-      </Link>
-    </ListItemButton>
+        { !isSmallDrawer && (
+          <ListItemText>
+            <Typography
+              color={ isSelected ? 'secondary.dark' : 'text.primary' }
+              fontWeight={ isSelected ? 'bold' : 'normal' }
+              variant="body1"
+            >
+              { item.title }
+            </Typography>
+          </ListItemText>
+        ) }
+      </ListItemButton>
+    </Tooltip>
   )
 }

@@ -5,6 +5,7 @@ declare global {
     capitalize(): string
     capitalizeFirst(): string
     humanize(): string
+    onlyNumbers(): string
     toSpace(indicators: string[]): string
   }
 }
@@ -45,6 +46,12 @@ if (!String.prototype.humanize) {
   String.prototype.humanize = function() {
     const str = this.capitalize()
     return str.capitalizeFirst()
+  }
+}
+
+if (!String.prototype.onlyNumbers) {
+  String.prototype.onlyNumbers = function() {
+    return this.replace(/\D/g, '')
   }
 }
 

@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js'
-import { SECRET_KEY } from '@/domain/constants'
+import { SECRET_KEY } from '../../constants'
 
 export enum Algorithm {
   Base64 = 'Base64',

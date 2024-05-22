@@ -23,7 +23,7 @@ async function seed() {
   // await seedUsers()
   // console.log('Users seeded!')
 
-  await seedHotels()
+  // await seedHotels()
   // console.log('Hotels seeded!')
 }
 

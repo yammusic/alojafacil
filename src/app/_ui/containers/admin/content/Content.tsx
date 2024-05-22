@@ -5,7 +5,7 @@ import { Breadcrumb } from '../breadcrumb'
 import type { ContentProps } from './props-types'
 import styles from './styles.module.scss'
 
-export function Content({ children, title }: Readonly<ContentProps>) {
+export function Content({ children, title, ...props }: Readonly<ContentProps>) {
   return (
     <>
       <Breadcrumb title={ title as string } />
@@ -14,6 +14,8 @@ export function Content({ children, title }: Readonly<ContentProps>) {
         container
         bgcolor="background.paper"
         className={ styles.content }
+        component="section"
+        { ...props }
       >
         <Grid item xs={ 12 }>
           { children }

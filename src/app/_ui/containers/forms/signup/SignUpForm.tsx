@@ -62,14 +62,14 @@ export function SignUpForm() {
       onSuccess={ onSubmit }
     >
       <Box className={ styles.formContainer }>
-        { error ? (
+        { !!error && (
           <Alert
             className={ styles.alert }
             severity="error"
           >
             { error }
           </Alert>
-        ) : null }
+        ) }
 
         <NameField />
 

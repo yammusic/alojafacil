@@ -1,8 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { appReducer, themeReducer } from '../features'
+import { appReducer, themeReducer, hotelsReducer } from '../features'
 
 export const reducers = {
   app: appReducer,
+  hotels: hotelsReducer,
   theme: themeReducer,
 }
 

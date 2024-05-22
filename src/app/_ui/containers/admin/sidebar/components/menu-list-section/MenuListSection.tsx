@@ -4,14 +4,17 @@ import { Box, useMediaQuery } from '@mui/material'
 import { BrowserView, MobileView } from 'react-device-detect'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
+import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
+import { themeDrawerWidth } from '@/domain/providers'
 import { LogoSection } from '../../../../header/components'
 import { MenuList } from './components'
 import { VersionSection } from '../version-section'
-
 import styles from './styles.module.scss'
 
 export function MenuListSection() {
   const matchUpMd = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
+  const drawerWidth = themeDrawerWidth()
+  const isSmallDrawer = drawerWidth === DRAWER_WIDTH_SMALL
 
   return (
     <>
@@ -27,7 +30,7 @@ export function MenuListSection() {
           style={ {
             height: (
               !matchUpMd
-                ? 'calc(100vh - 56px)'
+                ? 'calc(95vh - 56px)'
                 : 'calc(100vh - 64px)'
             ),
             paddingLeft: '16px',
@@ -36,7 +39,7 @@ export function MenuListSection() {
         >
           <MenuList />
 
-          <VersionSection />
+          { !isSmallDrawer && <VersionSection /> }
         </PerfectScrollbar>
       </BrowserView>
 
@@ -44,7 +47,7 @@ export function MenuListSection() {
         <Box sx={ { px: 2 } }>
           <MenuList />
 
-          <VersionSection />
+          { !isSmallDrawer && <VersionSection /> }
         </Box>
       </MobileView>
     </>
