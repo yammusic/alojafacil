@@ -89,6 +89,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
+  "engines": {
+    "node": "20.13.1"
+  },
   "prisma": {
     "schema": "src/domain/prisma/schema.prisma",
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} src/domain/prisma/seed.ts"
