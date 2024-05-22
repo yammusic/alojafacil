@@ -90,7 +90,7 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": "20.13.1"
+    "node": "20.11.1"
   },
   "prisma": {
     "schema": "src/domain/prisma/schema.prisma",
