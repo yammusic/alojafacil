@@ -33,8 +33,8 @@ jobs:
           output_location: "" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          PRE_BUILD_COMMAND: npm install -g prisma
-          POST_BUILD_COMMAND: npm install @prisma/client && npx prisma generate
+          PRE_BUILD_COMMAND: npm install -g prisma && npm run prisma:generate
+          POST_BUILD_COMMAND: npm install @prisma/client
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
