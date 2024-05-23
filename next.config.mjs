@@ -24,7 +24,7 @@ const nextConfig = {
   webpack(config) {
     config.ignoreWarnings = [{
       module: /sequelize/,
-      message: /Module not found|dependency is an expression/
+      message: /Module not found|dependency is an expression|is not a exported from/
     }]
 
     return config

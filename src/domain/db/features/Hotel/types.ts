@@ -30,6 +30,4 @@ export interface HotelAttributes {
   updatedAt?: Date
 }
 
-
-
 export interface HotelCreationAttributes extends Optional<HotelAttributes, 'id' | 'status' | 'createdAt' | 'updatedAt'> {}

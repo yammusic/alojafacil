@@ -10,7 +10,6 @@ import {
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers'
-// import { getUser, useDb } from '@/domain/db'
 import { getUser } from '@/domain/db'
 import { requestLoginValidator } from './validator'
 

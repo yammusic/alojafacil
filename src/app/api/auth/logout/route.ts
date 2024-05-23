@@ -7,7 +7,8 @@ import {
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers'
-import { Session, SessionStatus } from '@/domain/db'
+import type { Session } from '@/domain/db'
+import { SessionStatus, getSession } from '@/domain/db'
 
 export async function DELETE(req: Request) {
   const res = NextResponse
@@ -20,9 +21,9 @@ export async function DELETE(req: Request) {
     })
 
     const accessToken = req.headers.get('authorization')?.split(' ')[1]
-    const session = await Session.findOne({ accessToken }) as Session
+    const session = await getSession({ accessToken }) as Session
     session.status = SessionStatus.EXPIRED
-    session.updatedAt = new Date()
+    // session.updatedAt = new Date()
     await session.save()
 
     deleteCookie('session', { cookies })

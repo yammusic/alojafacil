@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { FormContainer, useForm } from 'react-hook-form-mui'
 import { Alert, Box } from '@mui/material'
 
-import { User } from '@/domain/db'
 import { useAppActions } from '@/domain/providers'
 import { authLogin } from '@/infra/services'
 import { UsernameField, PasswordField, ActionsForm } from './components'
@@ -32,7 +31,7 @@ export function SignInForm() {
 
     try {
       const { content: { user } } = await authLogin(data)
-      setCurrentUser(new User(user))
+      setCurrentUser(user)
       router.push('/')
     } catch (err: any) {
       const msg = err?.response?.data?.content?.message ?? err.message
