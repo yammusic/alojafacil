@@ -10,6 +10,7 @@ import {
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers'
+// import { getUser, useDb } from '@/domain/db'
 import { getUser } from '@/domain/db'
 import { requestLoginValidator } from './validator'
 
@@ -32,14 +33,7 @@ export async function POST(req: Request) {
     const isExpired = Number(expiredAt) < Date.now()
     if (!accessToken || isExpired) { throw new UnauthorizedException() }
 
-    setCookie('session', accessToken, {
-      cookies,
-      // httpOnly: true,
-      // secure: true,
-      // expires: new Date(Number(expiredAt)),
-      // sameSite: 'lax',
-      // path: '/',
-    })
+    setCookie('session', accessToken, { cookies })
 
     return responseApiSuccess(res, {
       content: {

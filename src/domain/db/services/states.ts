@@ -1,5 +1,5 @@
-import type { StateProps } from '../models/State'
-import { State } from '../models/State'
+import type { StateProps } from '../modelsOld/State'
+import { State } from '../modelsOld/State'
 
 export const getStates = async (where?: StateProps) => {
   const states = await State.all(where)

@@ -16,6 +16,19 @@ const nextConfig = {
       './src/**/*.sass',
     ],
   },
+
+  experimental: {
+    serverComponentsExternalPackages: ['sequelize'],
+  },
+
+  webpack(config) {
+    config.ignoreWarnings = [{
+      module: /sequelize/,
+      message: /Module not found|dependency is an expression/
+    }]
+
+    return config
+  },
 }
 
 export default nextConfig

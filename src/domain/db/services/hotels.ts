@@ -1,5 +1,5 @@
-import type { HotelProps } from '../models/Hotel'
-import { Hotel } from '../models/Hotel'
+import type { HotelProps } from '../modelsOld/Hotel'
+import { Hotel } from '../modelsOld/Hotel'
 
 export const getHotels = async () => {
   const hotels = await Hotel.all()

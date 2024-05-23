@@ -34,4 +34,5 @@ export const validateAccessAuthorization = async (req: Request) => {
     err.setMessage('Access token is expired')
     throw err
   }
+
 }

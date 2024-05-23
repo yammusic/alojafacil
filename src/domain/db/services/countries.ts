@@ -1,5 +1,5 @@
-import type { CountryProps } from '../models/Country'
-import { Country } from '../models/Country'
+import type { CountryProps } from '../modelsOld/Country'
+import { Country } from '../modelsOld/Country'
 
 export const getCountries = async () => {
   const countries = await Country.all()
