@@ -146,7 +146,7 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
               ml={ 0.25 }
               variant="subtitle2"
             >
-              { currentUser.roles.join(', ') }
+              { currentUser?.roles?.join(', ') }
             </Typography>
           </Grid>
 
