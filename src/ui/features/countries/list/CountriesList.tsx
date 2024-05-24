@@ -1,52 +1,160 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 
-import { appCountries, useAppActions } from '@/domain/providers'
-import { fetchCountries } from '@/infra/services'
+import { DataGrid } from '@/app/containers'
+import { appCountries, useAppActions } from '@/domain/providers/store'
+import type { CountryAttributes } from '@/domain/db/features/Country/types'
+import type { CountryResponse } from '@/infra/services'
+import {
+  createCountry,
+  deleteCountry,
+  fetchCountries,
+  updateCountry,
+} from '@/infra/services'
+
 import columns from './columns'
+import { CountryModal } from '../modal'
+import { DeleteAlert } from './DeleteAlert'
+import { Alert, Snackbar } from '@mui/material'
 
 export function CountriesList() {
+  const [loading, setLoading] = useState(false)
+  const [notification, setNotification] = useState('')
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [openAlert, setOpenAlert] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [modeModal, setModeModal] = useState<'view' | 'edit' | 'add'>('add')
+  const [selectedCountry, setSelectedCountry] = useState<CountryAttributes | null>()
   const { setCountries } = useAppActions()
   const countries = appCountries()
 
-  const loadCountries = async() => {
-    if (!countries || !countries.length) {
-      const { content: { data } } = await fetchCountries()
-      setCountries(data as any)
-    }
-  }
+  const loadCountries = useCallback(async() => {
+    const { content: { data } } = await fetchCountries()
+    setCountries(data as any)
+    setLoading(false)
+  }, [])
 
   useEffect(() => { loadCountries() }, [])
 
+  const onToggleModal = useCallback((_: any, reason: string) => {
+    if (reason !== 'backdropClick') {
+      setOpenModal(!openModal)
+    }
+  }, [openModal])
+
+  const onCloseSnackbar = useCallback(() => {
+    setOpenSnackbar(false)
+  }, [])
+
+  const onCloseAlert = useCallback(() => {
+    setOpenAlert(false)
+  }, [])
+
+  const onConfirmDelete = useCallback(async () => {
+    if (!selectedCountry) return
+    setOpenAlert(false)
+    setLoading(true)
+
+    const { content: { message } } = await deleteCountry(selectedCountry.id)
+    setNotification(message)
+    setOpenSnackbar(true)
+
+    await loadCountries()
+  }, [selectedCountry])
+
+  const onSubmit = useCallback(async (data: CountryAttributes) => {
+    setOpenModal(false)
+    setLoading(true)
+    let response: CountryResponse
+    console.info({ data, modeModal })
+
+    try {
+      if (modeModal === 'edit') {
+        response = await updateCountry(data)
+      } else if (modeModal === 'add') {
+        response = await createCountry(data)
+      } else { return }
+
+      setNotification(response?.content?.message)
+      setOpenSnackbar(true)
+
+      await loadCountries()
+    } catch (error: any) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }, [selectedCountry, modeModal])
+
+  const onAddClick = useCallback(() => {
+    setSelectedCountry(null)
+    setModeModal('add')
+    setOpenModal(true)
+  }, [])
+
+  const onEditClick = useCallback((item: CountryAttributes) => {
+    setSelectedCountry(item)
+    setModeModal('edit')
+    setOpenModal(true)
+  }, [])
+
+  const onDeleteClick = useCallback((item: CountryAttributes) => {
+    setSelectedCountry(item)
+    setOpenAlert(true)
+  }, [])
+
+  const onViewClick = useCallback((item: CountryAttributes) => {
+    setSelectedCountry(item)
+    setModeModal('view')
+    setOpenModal(true)
+  }, [])
+
   return (
-    <Box sx={ { height: 400, width: '100%' } }>
+    <Box>
       <DataGrid
-        checkboxSelection
-        disableColumnFilter
         disableRowSelectionOnClick
-        autosizeOptions={ {
-          columns: ['name', 'actions'],
-        } }
+        useActions
+        useAddButton
         columns={ columns }
-        initialState={ {
-          pagination: {
-            paginationModel: {
-              pageSize: 25,
-            },
-          },
-        } }
-        pageSizeOptions={ [25] }
+        loading={ !countries || !countries.length || loading }
+        onAddClick={ onAddClick }
+        onDeleteClick={ onDeleteClick }
+        onEditClick={ onEditClick }
+        onViewClick={ onViewClick }
         rows={ countries }
-        slotProps={ {
-          toolbar: {
-            showQuickFilter: true,
-          },
-        } }
-        slots={ { toolbar: GridToolbar } }
       />
+
+      <CountryModal
+        country={ selectedCountry }
+        mode={ modeModal }
+        onClose={ onToggleModal }
+        onSubmit={ onSubmit }
+        open={ openModal }
+      />
+
+      <DeleteAlert
+        onClose={ onCloseAlert }
+        onConfirm={ onConfirmDelete }
+        open={ openAlert }
+      />
+
+      <Snackbar
+        anchorOrigin={ { vertical: 'top', horizontal: 'right' } }
+        autoHideDuration={ 3000 }
+        onClose={ onCloseSnackbar }
+        open={ openSnackbar }
+      >
+        <Alert
+          onClose={ onCloseSnackbar }
+          severity="success"
+          sx={ { width: '100%' } }
+          variant="filled"
+        >
+          { notification }
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

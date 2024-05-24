@@ -10,7 +10,7 @@ export default function Hotels() {
   if (!session) return redirect('/auth/sign-in')
 
   return (
-    <Content p={ 0 } title="Hotels">
+    <Content title="Hotels">
       <HotelsList />
     </Content>
   )

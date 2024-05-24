@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
 
-import type { SidebarMenuItem } from '@/domain/providers'
-import { appSidebarMenu } from '@/domain/providers'
+import type { SidebarMenuItem } from '@/domain/providers/store'
+import { appSidebarMenu } from '@/domain/providers/store'
 import { MenuGroup } from './menu-group'
 
 export function MenuList() {

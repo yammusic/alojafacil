@@ -1,3 +1,4 @@
+export * from './data-grid'
 export * from './footer'
 export * from './forms'
 export * from './header'

@@ -6,7 +6,7 @@ import {
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 import type { Session } from '@/domain/db'
 import { SessionStatus, getSession } from '@/domain/db'
 

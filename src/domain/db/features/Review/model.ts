@@ -35,7 +35,7 @@ export class Review extends Model<ReviewAttributes, ReviewCreationAttributes> im
   @Column(DataType.INTEGER)
   rating!: number
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   comment?: string
 
   @CreatedAt

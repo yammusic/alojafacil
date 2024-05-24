@@ -11,7 +11,7 @@ import {
 } from '@mui/x-data-grid'
 import { MdEdit } from 'react-icons/md'
 
-import { hotelsData, useHotelsActions } from '@/domain/providers'
+import { hotelsData, useHotelsActions } from '@/domain/providers/store'
 import { fetchHotels } from '@/infra/services'
 import defaultColumns from './columns'
 import { Toolbar } from './Toolbar'

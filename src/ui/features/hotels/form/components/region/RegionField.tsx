@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { AutocompleteElement, useForm, useWatch } from 'react-hook-form-mui'
 
-import { appCountries, useAppActions, useAppState } from '@/domain/providers'
+import { appCountries, useAppActions, useAppState } from '@/domain/providers/store'
 import type { Country } from '@/domain/db'
 
 export function RegionField() {

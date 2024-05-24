@@ -3,9 +3,10 @@
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { BsJournalBookmarkFill } from 'react-icons/bs'
 import { FaHotel, FaKey, FaUsers } from 'react-icons/fa6'
+import { GiModernCity, GiMountainRoad } from 'react-icons/gi'
 import { GrDocumentUser } from 'react-icons/gr'
+import { IoMdGlobe } from 'react-icons/io'
 import { MdLocalHotel } from 'react-icons/md'
-import { TbWorld } from 'react-icons/tb'
 
 import type { SidebarMenuItem } from './types'
 
@@ -88,10 +89,24 @@ export const sidebarMenu: SidebarMenuItem[] = [
       {
         title: 'Countries',
         url: '/admin/countries',
-        icon: TbWorld,
+        icon: IoMdGlobe,
         id: 'countries__item',
         type: 'item',
       },
+      // {
+      //   title: 'States',
+      //   url: '/admin/states',
+      //   icon: GiMountainRoad,
+      //   id: 'states__item',
+      //   type: 'item',
+      // },
+      // {
+      //   title: 'Cities',
+      //   url: '/admin/cities',
+      //   icon: GiModernCity,
+      //   id: 'cities__item',
+      //   type: 'item',
+      // },
     ],
   },
 ]

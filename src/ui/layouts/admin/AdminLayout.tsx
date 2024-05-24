@@ -5,7 +5,7 @@ import { Box, Container, useTheme } from '@mui/material'
 import '@/domain/polyfills'
 
 import { Header, Sidebar } from '@/app/containers/admin'
-import { themeDrawerWidth } from '@/domain/providers'
+import { themeDrawerWidth } from '@/domain/providers/store'
 import type { AdminLayoutProps } from './props-types'
 import styles from './styles.module.scss'
 

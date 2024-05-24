@@ -6,7 +6,7 @@ import {
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 
 export async function GET(req: NextRequest) {
   const res = NextResponse

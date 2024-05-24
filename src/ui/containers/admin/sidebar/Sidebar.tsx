@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material'
 
-import { themeDrawerOpen, themeDrawerWidth, useThemeActions } from '@/domain/providers'
+import { themeDrawerOpen, themeDrawerWidth, useThemeActions } from '@/domain/providers/store'
 import { MenuListSection } from './components'
 
 import styles from './styles.module.scss'

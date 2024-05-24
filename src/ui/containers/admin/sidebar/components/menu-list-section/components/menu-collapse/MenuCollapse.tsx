@@ -13,7 +13,8 @@ import {
 import { MdFiberManualRecord } from 'react-icons/md'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6'
 
-import { themeBorderRadius, useTheme } from '@/domain/providers'
+import { themeBorderRadius } from '@/domain/providers/store'
+import { useTheme } from '@/domain/providers/theme'
 import type { MenuCollapseProps } from './props-types'
 
 export function MenuCollapse({ menu, level }: Readonly<MenuCollapseProps>) {

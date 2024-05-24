@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import merge from 'deepmerge'
 
-import { useAppDispatch } from '@/domain/providers'
+import { useAppDispatch } from '../../shared/hooks'
 import type { RootState } from '../../shared'
 import {
   appStart,

@@ -1,4 +1,4 @@
-import type { ThemeColorMode } from '@/domain/providers'
+import type { ThemeColorMode } from '@/domain/providers/theme'
 
 export interface ThemeState {
   borderRadius: number

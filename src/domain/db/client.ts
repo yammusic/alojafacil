@@ -42,7 +42,7 @@ export const useSequelize = () => {
   return sequelize
 }
 
-export const useDb = async () => {
+export const useDb = async (sync: boolean = false) => {
   if (!sequelize) { useSequelize() }
 
   sequelize.addModels([
@@ -60,7 +60,9 @@ export const useDb = async () => {
     UserRole,
   ])
 
-  await sequelize.sync()
+  if (sync) {
+    await sequelize.sync()
+  }
 
   return {
     Booking,

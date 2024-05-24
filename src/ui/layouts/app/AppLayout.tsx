@@ -1,11 +1,9 @@
 import React from 'react'
 import '@/domain/polyfills'
 
-import {
-  LocalizationProvider,
-  StoreProvider,
-  ThemeProvider,
-} from '@/domain/providers'
+import { LocalizationProvider } from '@/domain/providers/localization'
+import { StoreProvider } from '@/domain/providers/store'
+import { ThemeProvider } from '@/domain/providers/theme'
 import { TopLoader } from '@/app/containers'
 import { isDev } from '@/domain/utils'
 

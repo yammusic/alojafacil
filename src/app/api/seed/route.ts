@@ -6,7 +6,7 @@ import {
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 
 import { useDb, useTurso } from '@/domain/db'
 import type {
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     User,
     UserInfo,
     UserRole,
-  } = await useDb()
+  } = await useDb(true)
 
   try {
     await apiMiddleware(req, params, res, {
@@ -50,39 +50,21 @@ export async function GET(req: NextRequest) {
 
     // Countries seed
     const countriesData = await db.country.findMany() ?? []
-    for (const country of countriesData) {
-      await Country.findOrCreate({
-        where: { id: country.id },
-        defaults: country as CountryAttributes,
-      })
-    }
+    await Country.bulkCreate(countriesData as CountryAttributes[])
 
     // States seed
     const statesData = await db.state.findMany() ?? []
-    for (const state of statesData) {
-      await State.findOrCreate({
-        where: { id: state.id },
-        defaults: state as StateAttributes,
-      })
+    await State.bulkCreate(statesData as StateAttributes[])
 
-      // Cities seed
+    // Cities seed
+    for (const state of statesData) {
       const citiesData = await db.city.findMany({ where: { stateId: state.id } }) ?? []
-      for (const city of citiesData) {
-        await City.findOrCreate({
-          where: { id: city.id },
-          defaults: city as CityAttributes,
-        })
-      }
+      await City.bulkCreate(citiesData as CityAttributes[])
     }
 
     // Roles seed
     const rolesData = await db.role.findMany() ?? []
-    for (const role of rolesData) {
-      await Role.findOrCreate({
-        where: { id: role.id },
-        defaults: role as RoleAttributes,
-      })
-    }
+    await Role.bulkCreate(rolesData as RoleAttributes[])
     const admin = await Role.findOne({ where: { name: 'admin' } })
     const member = await Role.findOne({ where: { name: 'member' } })
 
@@ -111,48 +93,41 @@ export async function GET(req: NextRequest) {
 
     // UserInfo seed
     const userInfoData = await db.userInfo.findMany() ?? []
-    for (const userInfo of userInfoData) {
-      await UserInfo.findOrCreate({
-        where: { id: userInfo.id },
-        defaults: userInfo as UserInfoAttributes,
-      })
-    }
+    await UserInfo.bulkCreate(userInfoData as UserInfoAttributes[])
 
     // Sessions seed
     const sessionsData = await db.session.findMany()
-    for (const session of sessionsData) {
-      await Session.findOrCreate({
-        where: { id: session.id },
-        defaults: session as SessionAttributes,
-      })
-    }
+    await Session.bulkCreate(sessionsData as SessionAttributes[])
 
     // Hotels seed
     const hotelsData = await db.hotel.findMany() ?? []
-    for (const hotel of hotelsData) {
-      await Hotel.findOrCreate({
-        where: { id: hotel.id },
-        defaults: hotel as HotelAttributes,
-      })
-    }
+    await Hotel.bulkCreate(hotelsData as HotelAttributes[])
+    // for (const hotel of hotelsData) {
+    //   await Hotel.findOrCreate({
+    //     where: { id: hotel.id },
+    //     defaults: hotel as HotelAttributes,
+    //   })
+    // }
 
     // Rooms seed
     const roomsData = await db.room.findMany() ?? []
-    for (const room of roomsData) {
-      await Room.findOrCreate({
-        where: { id: room.id },
-        defaults: room as RoomAttributes,
-      })
-    }
+    await Room.bulkCreate(roomsData as RoomAttributes[])
+    // for (const room of roomsData) {
+    //   await Room.findOrCreate({
+    //     where: { id: room.id },
+    //     defaults: room as RoomAttributes,
+    //   })
+    // }
 
     // Reviews seed
     const reviewsData = await db.review.findMany() ?? []
-    for (const review of reviewsData) {
-      await Review.findOrCreate({
-        where: { id: review.id },
-        defaults: review as ReviewAttributes,
-      })
-    }
+    await Review.bulkCreate(reviewsData as ReviewAttributes[])
+    // for (const review of reviewsData) {
+    //   await Review.findOrCreate({
+    //     where: { id: review.id },
+    //     defaults: review as ReviewAttributes,
+    //   })
+    // }
 
     return responseApiSuccess(res, {
       content: {

@@ -1,4 +1,7 @@
+import React from 'react'
 import type { GridColDef } from '@mui/x-data-grid'
+import Flag from 'react-world-flags'
+import { Stack } from '@mui/material'
 
 const columns: GridColDef[] = [
   {
@@ -9,8 +12,15 @@ const columns: GridColDef[] = [
   {
     field: 'name',
     headerName: 'Name',
-    width: 200,
-    valueGetter: (_, row) => `${row.name} (${row.emoji})`,
+    flex: 1,
+    minWidth: 200,
+    renderCell: ({ row }) => (
+      <Stack alignItems="center" direction="row" gap={ 1 }>
+        <Flag code={ row.iso2 } height={ 16 }  />
+
+        { `${row.name} ${row.emoji}` }
+      </Stack>
+    ),
   },
   {
     field: 'iso2',

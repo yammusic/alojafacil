@@ -40,11 +40,11 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   @Column(DataType.STRING)
   password!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   secretKey!: string
 
   @Default(UserStatus.ACTIVE)
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   status!: UserStatus
 
   @CreatedAt

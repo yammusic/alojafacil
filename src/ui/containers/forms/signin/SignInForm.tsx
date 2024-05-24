@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { FormContainer, useForm } from 'react-hook-form-mui'
 import { Alert, Box } from '@mui/material'
 
-import { useAppActions } from '@/domain/providers'
+import { useAppActions } from '@/domain/providers/store'
 import { authLogin } from '@/infra/services'
 import { UsernameField, PasswordField, ActionsForm } from './components'
 

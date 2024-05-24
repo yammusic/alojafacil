@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import type { SidebarMenuItem, SidebarMenuItemChip } from '@/domain/providers'
+import type { SidebarMenuItem, SidebarMenuItemChip } from '@/domain/providers/store'
 
 export interface MenuItemProps {
   item: SidebarMenuItem

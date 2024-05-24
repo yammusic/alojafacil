@@ -31,7 +31,7 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
   @Column(DataType.STRING)
   type!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   description?: string
 
   @Column(DataType.FLOAT)
@@ -46,10 +46,10 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
   @Column(DataType.STRING)
   location!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   picture!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   images!: string
 
   @Default(true)
@@ -68,13 +68,13 @@ export class Room extends Model<RoomAttributes, RoomCreationAttributes> implemen
   @Column(DataType.INTEGER)
   capacity!: number
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   amenities?: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   features?: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   payments?: string
 
   @Default(RoomStatus.ACTIVE)

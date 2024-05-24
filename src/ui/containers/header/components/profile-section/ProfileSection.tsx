@@ -26,7 +26,7 @@ import { RiListSettingsLine } from 'react-icons/ri'
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { FiLogOut } from 'react-icons/fi'
 
-import { appCurrentUser, useAppActions } from '@/domain/providers'
+import { appCurrentUser, useAppActions } from '@/domain/providers/store'
 import { authLogout } from '@/infra/services'
 
 import type { ProfileSectionProps } from './props-types'

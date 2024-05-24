@@ -4,7 +4,7 @@ import React from 'react'
 import { Divider, List, Typography } from '@mui/material'
 
 import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
-import { themeDrawerWidth } from '@/domain/providers'
+import { themeDrawerWidth } from '@/domain/providers/store'
 import { MenuCollapse } from '../menu-collapse'
 import { MenuItem } from '../menu-item'
 import type { MenuGroupProps } from './props-types'

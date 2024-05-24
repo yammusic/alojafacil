@@ -24,7 +24,7 @@ import { Review } from '../Review'
 export class Hotel extends Model<HotelAttributes, HotelCreationAttributes> implements HotelAttributes {
   @PrimaryKey
   @AutoIncrement
-  @Column({ type: DataType.INTEGER })
+  @Column(DataType.INTEGER)
   id!: number
 
   @Column(DataType.STRING)
@@ -57,31 +57,29 @@ export class Hotel extends Model<HotelAttributes, HotelCreationAttributes> imple
   @Column(DataType.STRING)
   postalCode!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   picture!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   images!: string
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: true,
-  })
+  @Default(true)
+  @Column(DataType.BOOLEAN)
   available!: boolean
 
   @Column(DataType.FLOAT)
   rating?: number
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   amenities?: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   policies?: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   features?: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   payments?: string
 
   @Default(HotelStatus.ACTIVE)

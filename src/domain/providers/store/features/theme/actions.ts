@@ -1,7 +1,7 @@
 'use client'
 
 import { createAction } from '@reduxjs/toolkit'
-import type { ThemeColorMode } from '@/domain/providers'
+import type { ThemeColorMode } from '@/domain/providers/theme'
 
 export const setColorMode = createAction<ThemeColorMode>('@theme/SET_COLOR_MODE')
 export const setDrawerOpen = createAction<boolean>('@theme/SET_DRAWER_OPEN')

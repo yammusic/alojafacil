@@ -20,19 +20,18 @@ import { User } from '../User'
 export class Session extends Model<SessionAttributes, SessionCreationAttributes> implements SessionAttributes {
   @PrimaryKey
   @AutoIncrement
-  @Column({ type: DataType.INTEGER })
+  @Column(DataType.INTEGER)
   id!: number
 
   @ForeignKey(() => User)
-  @Column({ type: DataType.INTEGER })
+  @Column(DataType.INTEGER)
   userId!: number
 
-  @Unique
-  @Column({ type: DataType.STRING })
+  @Column(DataType.TEXT)
   accessToken!: string
 
   @Default(SessionStatus.ACTIVE)
-  @Column({ type: DataType.STRING })
+  @Column(DataType.STRING)
   status!: SessionStatus
 
   @CreatedAt

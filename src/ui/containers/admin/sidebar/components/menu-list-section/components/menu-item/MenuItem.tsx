@@ -11,10 +11,7 @@ import {
 } from '@mui/material'
 
 import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
-import {
-  themeDrawerWidth,
-  useThemeActions,
-} from '@/domain/providers'
+import { themeDrawerWidth, useThemeActions } from '@/domain/providers/store'
 
 import { MenuItemIcon } from './item-icon/MenuItemIcon'
 // import { MenuItemTitle } from './item-title/MenuItemTitle'

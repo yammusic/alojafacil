@@ -1,12 +1,11 @@
 import axios from 'axios'
-// import useSWR from 'swr'
 
-import type { Country, State } from '@/domain/db'
+import type { CountryAttributes } from '@/domain/db/features/Country/types'
 
 interface Response {
   content: {
     message: string
-    data: unknown[]
+    data: any
   }
   status: {
     code: number
@@ -18,14 +17,14 @@ interface Response {
 export interface CountriesResponse extends Response {
   content: {
     message: string
-    data: Country[]
+    data: CountryAttributes[]
   }
 }
 
-export interface StatesResponse extends Response {
+export interface CountryResponse extends Response {
   content: {
     message: string
-    data: State[]
+    data: CountryAttributes
   }
 }
 
@@ -35,13 +34,26 @@ export const fetchCountries = async () => {
   return data
 }
 
-// export const fetchCountriesSWR = async () => {
-//   const data = useSWR('/api/region/countries', fetchCountries)
-//   return data
-// }
+export const fetchCountry = async (id: number) => {
+  const url = `/api/region/countries?id=${id}`
+  const { data } = await axios.get<CountryAttributes>(url)
+  return data
+}
 
-export const fetchStates = async (countryId: number) => {
-  const url = `/api/region/states?countryId=${countryId}`
-  const { data } = await axios.get<StatesResponse>(url)
+export const createCountry = async (country: CountryAttributes) => {
+  const url = '/api/region/countries'
+  const { data } = await axios.post<CountryResponse>(url, { country })
+  return data
+}
+
+export const updateCountry = async (country: CountryAttributes) => {
+  const url = '/api/region/countries'
+  const { data } = await axios.patch<CountryResponse>(url, { country })
+  return data
+}
+
+export const deleteCountry = async (id: number) => {
+  const url = '/api/region/countries'
+  const { data } = await axios.delete<CountryResponse>(url, { data: { id } })
   return data
 }

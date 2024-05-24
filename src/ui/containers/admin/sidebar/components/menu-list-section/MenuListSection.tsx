@@ -5,7 +5,7 @@ import { BrowserView, MobileView } from 'react-device-detect'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { DRAWER_WIDTH_SMALL } from '@/domain/constants'
-import { themeDrawerWidth } from '@/domain/providers'
+import { themeDrawerWidth } from '@/domain/providers/store'
 import { LogoSection } from '../../../../header/components'
 import { MenuList } from './components'
 import { VersionSection } from '../version-section'
