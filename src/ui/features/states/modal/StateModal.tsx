@@ -50,9 +50,9 @@ export function StateModal(props: Readonly<StateModalProps>) {
 
           { (mode === 'edit' || mode === 'add') && (
             <StateForm
-              state={ state }
               onCancel={ onClose }
               onSubmit={ onSubmit }
+              state={ state }
             />
           ) }
         </Grid>

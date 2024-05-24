@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
@@ -31,9 +32,9 @@ export function StatesList() {
   const { states } = useAppState()
 
   const loadStates = async() => {
-    const { content: { data } } = await fetchStates()
-    setStates(data as any)
-    setLoading(false)
+    // const { content: { data } } = await fetchStates()
+    // setStates(data as any)
+    // setLoading(false)
   }
 
   useEffect(() => { loadStates() }, [])
@@ -127,11 +128,11 @@ export function StatesList() {
       />
 
       <StateModal
-        state={ selectedState }
         mode={ modeModal }
         onClose={ onToggleModal }
         onSubmit={ onSubmit }
         open={ openModal }
+        state={ selectedState }
       />
 
       <DeleteAlert

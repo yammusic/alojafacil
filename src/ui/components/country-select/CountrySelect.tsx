@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -6,7 +7,7 @@ import { AutocompleteElement, useForm, useWatch } from 'react-hook-form-mui'
 import { useAppActions, useAppState } from '@/domain/providers/store'
 import type { CountryAttributes } from '@/domain/db/features/Country/types'
 import { fetchCountries } from '@/infra/services'
-import { CountrySelectProps } from './props-types'
+import type { CountrySelectProps } from './props-types'
 
 export function CountrySelect(props: Readonly<CountrySelectProps>) {
   const [loading, setLoading] = useState(false)

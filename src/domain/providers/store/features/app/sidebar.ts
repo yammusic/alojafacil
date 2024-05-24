@@ -3,7 +3,6 @@
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { BsJournalBookmarkFill } from 'react-icons/bs'
 import { FaHotel, FaKey, FaUsers } from 'react-icons/fa6'
-import { GiModernCity, GiMountainRoad } from 'react-icons/gi'
 import { GrDocumentUser } from 'react-icons/gr'
 import { IoMdGlobe } from 'react-icons/io'
 import { MdLocalHotel } from 'react-icons/md'

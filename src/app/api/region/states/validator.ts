@@ -1,4 +1,4 @@
-import { BadRequestException } from '@/domain/providers'
+import { BadRequestException } from '@/domain/providers/http'
 
 export const requestStatesValidator = async (params: any) => {
   const { id, countryId } = params

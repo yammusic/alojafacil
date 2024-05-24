@@ -2,7 +2,7 @@ import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 import { getUser } from '@/domain/db'
 
 export const requestLoginValidator = async (params: any) => {

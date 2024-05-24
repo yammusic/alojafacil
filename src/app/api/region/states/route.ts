@@ -6,7 +6,7 @@ import {
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 import { getState, getStates } from '@/domain/db'
 import { requestStatesValidator } from './validator'
 

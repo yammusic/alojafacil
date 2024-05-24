@@ -9,7 +9,7 @@ import {
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
-} from '@/domain/providers'
+} from '@/domain/providers/http'
 import { getUser } from '@/domain/db'
 import { requestLoginValidator } from './validator'
 

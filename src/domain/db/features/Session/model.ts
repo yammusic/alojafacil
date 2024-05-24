@@ -6,7 +6,6 @@ import {
   CreatedAt,
   UpdatedAt,
   Default,
-  Unique,
   PrimaryKey,
   AutoIncrement,
   ForeignKey,
