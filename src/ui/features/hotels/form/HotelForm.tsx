@@ -1,17 +1,18 @@
 'use client'
 
 import React, { useCallback, useState } from 'react'
-import { AutocompleteElement, FormContainer, TextFieldElement, useForm, useWatch } from 'react-hook-form-mui'
-import { Alert, Button, Checkbox, CircularProgress, FormControlLabel, Grid, IconButton, Stack, Typography } from '@mui/material'
-import { IoClose } from 'react-icons/io5'
+import { AutocompleteElement, CheckboxElement, FormContainer, TextFieldElement, useForm, useWatch } from 'react-hook-form-mui'
+import { Alert, Button, Grid, Stack } from '@mui/material'
 
 import type { HotelFormProps, HotelFormValues } from './props-types'
 import styles from './styles.module.scss'
+import { CitySelect, CountrySelect, StateSelect } from '@/app/components'
+import { mapHotelToValues, mapValuesToHotel } from './utils'
 
 export function HotelForm(props: Readonly<HotelFormProps>) {
-  const { onCloseModal } = props ?? {}
-  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { onCancel, onSubmit, hotel } = props ?? {}
+  const values = mapHotelToValues(hotel as any)
 
   const formCtx = useForm<HotelFormValues>({
     defaultValues: {
@@ -21,6 +22,7 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
       latitude: '',
       longitude: '',
       postalCode: '',
+      picture: '',
       images: [],
       amenities: [],
       policies: [],
@@ -28,26 +30,26 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
       payments: [],
       available: true,
     },
+    values,
   })
   const {
-    images,
-    amenities,
-    policies,
-    features,
-    payments,
+    countryId = values.countryId,
+    stateId = values.stateId,
+    images = values.images,
+    amenities = values.amenities,
+    policies = values.policies,
+    features = values.features,
+    payments = values.payments,
   } = useWatch({ control: formCtx.control })
 
-  const onSubmit = useCallback(async (data: HotelFormValues) => {
+  const onSubmitHandler = useCallback(async (data: HotelFormValues) => {
     setError(null)
-    setIsLoading(true)
 
     try {
-      console.info('hotel', { data })
+      onSubmit?.(mapValuesToHotel(data))
     } catch (err: any) {
-      // const msg = err?.response?.data?.content?.message ?? err.message
-      // setError(msg ?? 'Unknown error')
-    } finally {
-      setIsLoading(false)
+      const msg = err?.response?.data?.content?.message ?? err.message
+      setError(msg ?? 'Unknown error')
     }
   }, [])
 
@@ -55,28 +57,18 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
     <FormContainer
       FormProps={ { className: styles.form } }
       formContext={ formCtx }
-      onSuccess={ onSubmit }
+      onSuccess={ onSubmitHandler }
     >
       <Grid container className={ styles.container }>
-        <Grid item className={ styles.header } xs={ 12 }>
-          <Typography variant="h4">Add Hotel</Typography>
-
-          <Stack>
-            <IconButton onClick={ onCloseModal as any }>
-              <IoClose />
-            </IconButton>
-          </Stack>
-        </Grid>
-
         <Grid item xs={ 12 }>
-          { error ? (
+          { !!error && (
             <Alert
               className={ styles.alert }
               severity="error"
             >
               { error }
             </Alert>
-        ) : null }
+        ) }
 
           <TextFieldElement
             fullWidth
@@ -94,7 +86,7 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             label="Description"
             margin="normal"
             name="description"
-            rows={ 4 }
+            rows={ 2 }
           />
 
           <Stack direction="row" sx={ { gap: 2 } }>
@@ -120,6 +112,26 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             />
           </Stack>
 
+          <CountrySelect
+            required
+            label="Country"
+            name="countryId"
+          />
+
+          <StateSelect
+            required
+            countryId={ countryId }
+            label="State"
+            name="stateId"
+          />
+
+          <CitySelect
+            required
+            label="City"
+            name="cityId"
+            stateId={ stateId }
+          />
+
           <Stack direction="row" sx={ { gap: 2 } }>
             <TextFieldElement
               fullWidth
@@ -140,6 +152,15 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             />
           </Stack>
 
+          <TextFieldElement
+            fullWidth
+            required
+            id="picture"
+            label="Picture"
+            margin="normal"
+            name="picture"
+          />
+
           <AutocompleteElement
             multiple
             autocompleteProps={ {
@@ -147,9 +168,10 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             } }
             label="Images"
             name="images"
-            options={ images as string[] }
+            options={ images.length > 0 ? images : values.images }
             textFieldProps={ {
               margin: 'normal',
+              helperText: 'Write image URL and press Enter to add',
             } }
           />
 
@@ -160,9 +182,10 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             } }
             label="Amenities"
             name="amenities"
-            options={ amenities as string[] }
+            options={ amenities.length > 0 ? amenities : values.amenities }
             textFieldProps={ {
               margin: 'normal',
+              helperText: 'Write the amenity and press Enter to add',
             } }
           />
 
@@ -173,9 +196,10 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             } }
             label="Policies"
             name="policies"
-            options={ policies as string[] }
+            options={ policies.length > 0 ? policies : values.policies }
             textFieldProps={ {
               margin: 'normal',
+              helperText: 'Write the policy and press Enter to add',
             } }
           />
 
@@ -186,9 +210,10 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             } }
             label="Features"
             name="features"
-            options={ features as string[] }
+            options={ features.length > 0 ? features : values.features }
             textFieldProps={ {
               margin: 'normal',
+              helperText: 'Write the feature and press Enter to add',
             } }
           />
 
@@ -199,26 +224,30 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             } }
             label="Payments"
             name="payments"
-            options={ payments as string[] }
+            options={ payments.length > 0 ? payments : values.payments }
             textFieldProps={ {
               margin: 'normal',
+              helperText: 'Write the payment and press Enter to add',
             } }
           />
 
-          <FormControlLabel
-            control={ <Checkbox color="primary" value="remember" /> }
-            id="available"
-            // label={ <Typography variant="body2">Available</Typography> }
-            label="Available"
-            name="available"
-            sx={ { mb: 2, mt: 1 } }
-          />
+          <Stack direction="row" sx={ { gap: 2, mb: 3 } }>
+            <CheckboxElement
+              id="available"
+              label="Available"
+              name="available"
+            />
+          </Stack>
 
-          <Stack className={ styles.actions } direction="row" spacing={ 2 }>
+          <Stack
+            className={ styles.actions }
+            direction="row"
+            spacing={ 2 }
+          >
             <Button
               fullWidth
-              color="inherit"
-              onClick={ onCloseModal as any }
+              color="secondary"
+              onClick={ onCancel as any }
               size="large"
               variant="outlined"
             >
@@ -228,15 +257,11 @@ export function HotelForm(props: Readonly<HotelFormProps>) {
             <Button
               fullWidth
               color="primary"
-              disabled={ isLoading }
               size="large"
               type="submit"
               variant="contained"
             >
-              { (isLoading
-                ? <CircularProgress size={ 24 } />
-                : 'Save'
-              ) }
+              Save
             </Button>
           </Stack>
         </Grid>

@@ -1,3 +1,5 @@
 export * from './countries'
 export * from './hotels'
+export * from './rooms'
 export * from './states'
+export * from './users'

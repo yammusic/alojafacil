@@ -13,9 +13,12 @@ import {
   setCountries,
   setCurrentUser,
   setReady,
+  setRoles,
+  setSessions,
   setSidebarMenu,
   setSidebarMenuActive,
   setStates,
+  setUsers,
 } from './actions'
 import { sidebarMenu } from './sidebar'
 
@@ -25,6 +28,9 @@ export const useAppState = () => (
 )
 
 export const appCurrentUser = () => useAppState().currentUser
+export const appUsers = () => useAppState().users
+export const appRoles = () => useAppState().roles
+export const appSessions = () => useAppState().sessions
 export const appCities = () => useAppState().cities
 export const appCountries = () => useAppState().countries
 export const appStates = () => useAppState().states
@@ -44,6 +50,9 @@ export const useAppActions = () => ({
     setReady,
     setSidebarMenu,
     setSidebarMenuActive,
+    setUsers,
+    setRoles,
+    setSessions,
   }, useAppDispatch())
 })
 

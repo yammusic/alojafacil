@@ -2,7 +2,12 @@ import type { ReactElement } from 'react'
 import type { ChipProps } from '@mui/material'
 import type { UrlObject } from 'url'
 
-import type { City, Country, State } from '@/domain/db'
+import type { City } from '@/domain/db/features/City/model'
+import type { Country } from '@/domain/db/features/Country/model'
+import type { Role } from '@/domain/db/features/Role/model'
+import type { Session } from '@/domain/db/features/Session/model'
+import type { State } from '@/domain/db/features/State/model'
+import type { User } from '@/domain/db/features/User/model'
 
 export interface UserResource {
   id: number
@@ -18,9 +23,12 @@ export interface AppState {
   countries: Country[]
   currentUser: UserResource | null
   isReady: boolean
+  roles: Role[]
+  sessions: Session[]
   sidebarMenu: SidebarMenuItem[]
   sidebarMenuActive: string[]
   states: State[]
+  users: User[]
 }
 
 

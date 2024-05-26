@@ -2,10 +2,18 @@
 
 import { createAction } from '@reduxjs/toolkit'
 import type { SidebarMenuItem, UserResource } from './types'
-import type { City, Country, State } from '@/domain/db'
+import type { City } from '@/domain/db/features/City/model'
+import type { Country } from '@/domain/db/features/Country/model'
+import type { Role } from '@/domain/db/features/Role/model'
+import type { Session } from '@/domain/db/features/Session/model'
+import type { State } from '@/domain/db/features/State/model'
+import type { User } from '@/domain/db/features/User/model'
 
 export const setReady = createAction<boolean>('@app/SET_READY')
 export const setCurrentUser = createAction<UserResource | null>('@app/SET_CURRENT_USER')
+export const setUsers = createAction<User[]>('@app/SET_USERS')
+export const setRoles = createAction<Role[]>('@app/SET_ROLES')
+export const setSessions = createAction<Session[]>('@app/SET_SESSIONS')
 export const setCountries = createAction<Country[]>('@app/SET_COUNTRIES')
 export const setStates = createAction<State[]>('@app/SET_STATES')
 export const setCities = createAction<City[]>('@app/SET_CITIES')

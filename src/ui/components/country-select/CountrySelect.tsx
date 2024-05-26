@@ -21,7 +21,7 @@ export function CountrySelect(props: Readonly<CountrySelectProps>) {
 
   const countriesOptions = useMemo(() => (
     countries.map((c: CountryAttributes) => (
-      { label: c.name, value: c.id }
+      { label: c.name, id: c.id }
     ))
   ), [countries])
 
@@ -40,6 +40,9 @@ export function CountrySelect(props: Readonly<CountrySelectProps>) {
       label="Country"
       name={ name ?? 'country' }
       options={ options ?? countriesOptions }
+      textFieldProps={ {
+        margin: 'normal',
+      } }
       { ...rest }
     />
   )

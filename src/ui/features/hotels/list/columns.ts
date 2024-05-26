@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
     flex: 1,
     minWidth: 100,
     maxWidth: 160,
-    valueGetter: (_, row) => `${row.city.name}`,
+    valueGetter: (_, row) => `${row.city?.name}`,
   },
   {
     field: 'stateId',
@@ -26,7 +26,7 @@ const columns: GridColDef[] = [
     flex: 1,
     minWidth: 100,
     maxWidth: 160,
-    valueGetter: (_, row) => `${row.state.name}`,
+    valueGetter: (_, row) => `${row.state?.name}`,
   },
   {
     field: 'countryId',
@@ -34,7 +34,7 @@ const columns: GridColDef[] = [
     flex: 1,
     minWidth: 100,
     maxWidth: 160,
-    valueGetter: (_, row) => `${row.country.name}`,
+    valueGetter: (_, row) => `${row.country?.name}`,
   },
   {
     field: 'postalCode',

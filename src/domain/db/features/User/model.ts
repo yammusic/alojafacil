@@ -77,7 +77,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   // Sessions
   async getAccessToken() {
     const secretKey = this.secretKey ?? SECRET_KEY
-    const activeSessions = this.sessions.filter((s: any) => s.status === SessionStatus.ACTIVE)
+    const activeSessions = this.sessions?.filter((s: any) => s.status === SessionStatus.ACTIVE)
+    if (!activeSessions) { return null }
     let activeToken
 
     for (const s of activeSessions) {
@@ -133,7 +134,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   async json() {
     const { accessToken } = await this.getAccessToken() ?? {}
-    const roles = this.roles.map(({ name }: any) => name)
+    const roles = this.roles?.map(({ name }: any) => name)
 
     return {
       id: this.id,

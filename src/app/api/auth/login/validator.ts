@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@/domain/providers/http'
-import { getUser } from '@/domain/db'
+import { getUserByUsername } from '@/domain/db'
 
 export const requestLoginValidator = async (params: any) => {
   const { username, password } = params
@@ -15,7 +15,7 @@ export const requestLoginValidator = async (params: any) => {
     throw err
   }
 
-  const user = await getUser(username)
+  const user = await getUserByUsername(username)
 
   if (!user) {
     const err = new NotFoundException()

@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-import type { Country, Hotel } from '@/domain/db'
+import type { HotelAttributes } from '@/domain/db/features/Hotel/types'
 
 interface Response {
   content: {
     message: string
-    data: unknown[] | unknown
+    data: any
   }
   status: {
     code: number
@@ -17,14 +17,14 @@ interface Response {
 export interface HotelsResponse extends Response {
   content: {
     message: string
-    data: Country[]
+    data: HotelAttributes[]
   }
 }
 
 export interface HotelResponse extends Response {
   content: {
     message: string
-    data: Hotel
+    data: HotelAttributes
   }
 }
 
@@ -40,7 +40,20 @@ export const fetchHotel = async (id: number) => {
   return data
 }
 
-// export const fetchHotelsSWR = async () => {
-//   const data = useSWR('/api/hotels', fetchHotels)
-//   return data
-// }
+export const createHotel = async (hotel: HotelAttributes) => {
+  const url = '/api/hotels'
+  const { data } = await axios.post<HotelResponse>(url, { hotel })
+  return data
+}
+
+export const updateHotel = async (hotel: HotelAttributes) => {
+  const url = '/api/hotels'
+  const { data } = await axios.patch<HotelResponse>(url, { hotel })
+  return data
+}
+
+export const deleteHotel = async (id: number) => {
+  const url = '/api/hotels'
+  const { data } = await axios.delete<HotelResponse>(url, { data: { id } })
+  return data
+}

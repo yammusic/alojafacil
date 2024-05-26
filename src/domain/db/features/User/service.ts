@@ -1,9 +1,26 @@
+import type { WhereOptions } from 'sequelize'
 import { useDb } from '../../client'
 import type { UserAttributes } from './types'
 
-export const getUser = async (username: string) => {
-  const { User, Role, Session } = await useDb()
-  const include = [Role, Session]
+type Where = WhereOptions<UserAttributes>
+
+export const getUsers = async () => {
+  const { User, Role, Session, UserInfo } = await useDb()
+  const include = [Role, Session, UserInfo]
+  const users = await User.findAll({ include })
+  return users
+}
+
+export const getUser = async (where: Where) => {
+  const { User, Role, Session, UserInfo } = await useDb()
+  const include = [Role, Session, UserInfo]
+  const user = await User.findOne({ where, include })
+  return user
+}
+
+export const getUserByUsername = async (username: string) => {
+  const { User, Role, Session, UserInfo } = await useDb()
+  const include = [Role, Session, UserInfo]
   let user = await User.findOne({ where: { username }, include })
   if (!user) { user = await User.findOne({ where: { email: username }, include }) }
   return user

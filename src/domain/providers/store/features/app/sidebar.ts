@@ -44,10 +44,10 @@ export const sidebarMenu: SidebarMenuItem[] = [
         type: 'item',
       },
       {
-        title: 'Reservations',
-        url: '/admin/reservations',
+        title: 'Bookings',
+        url: '/admin/bookings',
         icon: BsJournalBookmarkFill,
-        id: 'reservations__item',
+        id: 'bookings__item',
         type: 'item',
       },
     ],

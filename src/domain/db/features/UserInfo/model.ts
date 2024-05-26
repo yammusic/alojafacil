@@ -48,7 +48,7 @@ export class UserInfo extends Model<UserInfoAttributes, UserInfoCreationAttribut
   gender!: string
 
   @Column(DataType.DATE)
-  dateOfBirth!: Date
+  dateOfBirth!: Date | string
 
   @Column(DataType.STRING)
   phoneNumber!: string

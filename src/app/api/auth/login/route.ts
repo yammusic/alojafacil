@@ -10,7 +10,7 @@ import {
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers/http'
-import { getUser } from '@/domain/db'
+import { getUserByUsername } from '@/domain/db'
 import { requestLoginValidator } from './validator'
 
 export async function POST(req: Request) {
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       validator: requestLoginValidator,
     })
 
-    const user = await getUser(username)
+    const user = await getUserByUsername(username)
     if (!user) { throw new NotFoundException() }
 
     const { accessToken, expiredAt } = await user.sign()

@@ -9,7 +9,7 @@ export interface UserInfoAttributes {
   lastName: string
   avatar?: string
   gender: string
-  dateOfBirth: Date
+  dateOfBirth: Date | string
   phoneNumber: string
   documentType: string
   documentNumber: string
