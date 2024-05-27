@@ -1,0 +1,30 @@
+.section {
+}
+
+.container {
+  display: flex !important;
+  flex: 1;
+  flex-direction: column !important;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem !important;
+}
+
+.amenitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.amenity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

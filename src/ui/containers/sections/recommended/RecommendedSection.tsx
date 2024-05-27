@@ -1,54 +1,27 @@
 'use client'
 
-import React from 'react'
-import { Box, Card, CardActionArea, CardContent, CardMedia, Container, Grid, Rating, Stack, Typography } from '@mui/material'
+import React, { useEffect, useMemo } from 'react'
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Container,
+  Grid,
+  Rating,
+  Stack,
+  Typography,
+} from '@mui/material'
 
+import type { Hotel } from '@/domain/db/features/Hotel/model'
+import { hotelsData, useHotelsActions } from '@/domain/providers/store'
+import { calculateAverageRating } from '@/domain/utils/rating'
+import { fetchHotels } from '@/infra/services'
 import styles from './styles.module.scss'
+import Link from 'next/link'
 
-const HOTELS = [
-  {
-    name: 'NH Collection Bogotá WTC Royal',
-    location: 'Bogotá, Colombia',
-    image: 'https://images.trvl-media.com/lodging/1000000/10000/2400/2321/706f3d74.jpg?impolicy=fcrop&w=469&h=201&p=1&q=medium',
-  },
-  {
-    name: 'Hotel Casa Canabal',
-    location: 'Cartagena, Colombia',
-    image: 'https://images.trvl-media.com/lodging/5000000/4200000/4192700/4192674/30f56c65.jpg?impolicy=resizecrop&rw=455&ra=fit',
-  },
-  {
-    name: 'Medellín',
-    location: 'Colombia',
-    image: '/images/medellin.webp',
-  },
-  {
-    name: 'Bogotá',
-    location: 'Colombia',
-    image: '/images/bogota.webp',
-  },
-  {
-    name: 'NH Collection Bogotá WTC Royal 2',
-    location: 'Bogotá, Colombia',
-    image: 'https://images.trvl-media.com/lodging/1000000/10000/2400/2321/706f3d74.jpg?impolicy=fcrop&w=469&h=201&p=1&q=medium',
-  },
-  {
-    name: 'Hotel Casa Canabal 2',
-    location: 'Cartagena, Colombia',
-    image: 'https://images.trvl-media.com/lodging/5000000/4200000/4192700/4192674/30f56c65.jpg?impolicy=resizecrop&rw=455&ra=fit',
-  },
-  {
-    name: 'Medellín 2',
-    location: 'Colombia',
-    image: '/images/medellin.webp',
-  },
-  {
-    name: 'Bogotá 2',
-    location: 'Colombia',
-    image: '/images/bogota.webp',
-  },
-]
-
-const ratings: any = {
+const RATINGS: any = {
   0.5: 'Useless',
   1: 'Useless+',
   1.5: 'Poor',
@@ -61,13 +34,27 @@ const ratings: any = {
   5: 'Excellent+',
 }
 
-const randomNumber = (min: number, max: number, step: number = 1) => {
-  const range = (max - min) / step
-  const randomStep = Math.floor(Math.random() * (range + 1))
-  return min + randomStep * step
-}
-
 export function RecommendedSection() {
+  const { setHotels } = useHotelsActions()
+  const hotels = hotelsData()
+
+  const loadHotels = async() => {
+    const { content: { data } } = await fetchHotels()
+    setHotels(data as any)
+  }
+
+  useEffect(() => { loadHotels() }, [])
+
+  const sortByAverageRating = (hotels: Hotel[]): Hotel[] => (
+    hotels.slice().sort((a, b) => {
+      const averageRatingA = calculateAverageRating(a.reviews, a.rating)
+      const averageRatingB = calculateAverageRating(b.reviews, b.rating)
+      return averageRatingB - averageRatingA
+    })
+  )
+
+  const sortedHotels = useMemo(() => sortByAverageRating(hotels), [hotels])
+
   return (
     <Grid container className={ styles.container } component="section">
       <Container>
@@ -79,27 +66,31 @@ export function RecommendedSection() {
 
         <Grid item xs={ 12 }>
           <Stack useFlexGap className={ styles.cardsContainer }>
-            { HOTELS.map((item) => {
-              const rating = randomNumber(3, 5, 0.5)
+            { sortedHotels.slice(0, 8).map((hotel) => {
+              const rating = calculateAverageRating(hotel?.reviews, hotel?.rating)
 
               return (
-                <Card className={ styles.card } key={ item.name }>
-                  <CardActionArea className={ styles.cardActionArea }>
+                <Card className={ styles.card } key={ hotel?.name }>
+                  <CardActionArea
+                    LinkComponent={ Link }
+                    className={ styles.cardActionArea }
+                    href={ `/hotel/${hotel?.id}` }
+                  >
                     <CardMedia
-                      alt={ item.name }
+                      alt={ hotel?.name }
                       className={ styles.cardMedia }
                       component="img"
-                      image={ item.image }
+                      image={ hotel?.picture }
                       loading="lazy"
                     />
 
                     <CardContent className={ styles.cardContent }>
                       <Typography noWrap variant="h6">
-                        { item.name }
+                        { hotel?.name }
                       </Typography>
 
                       <Typography gutterBottom variant="body2">
-                        { item.location }
+                        { `${hotel?.city?.name}, ${hotel?.country?.name}` }
                       </Typography>
 
                       <Box className={ styles.ratingContainer }>
@@ -113,7 +104,7 @@ export function RecommendedSection() {
                         />
 
                         <Typography className={ styles.ratingText }>
-                          { ratings[rating] }
+                          { RATINGS[rating] }
                         </Typography>
                       </Box>
                     </CardContent>

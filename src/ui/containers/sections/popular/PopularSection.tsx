@@ -29,7 +29,7 @@ const ITEMS = [
 ]
 
 const cardWidth = 240
-const cardHeight = 300
+const cardHeight = 280
 
 export function PopularSection() {
   return (
@@ -47,7 +47,7 @@ export function PopularSection() {
           <Typography
             gutterBottom
             className={ styles.title }
-            fontSize={ 26 }
+            fontSize={ 28 }
             variant="h5"
           >
             Popular destinations

@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
   {
     field: 'username',
     headerName: 'Username',
-    flex: 2,
+    flex: 1,
     minWidth: 180,
     renderCell: ({ row }) => (
       <Stack direction="row" sx={ { alignItems: 'center', gap: 2, height: '100%' } }>
@@ -26,7 +26,7 @@ const columns: GridColDef[] = [
   {
     field: 'email',
     headerName: 'Email',
-    flex: 2,
+    flex: 1,
     minWidth: 180,
   },
   {

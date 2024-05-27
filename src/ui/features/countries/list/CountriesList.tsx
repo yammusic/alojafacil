@@ -16,8 +16,8 @@ import {
 
 import columns from './columns'
 import { CountryModal } from '../modal'
-import { DeleteAlert } from './DeleteAlert'
 import { Alert, Snackbar } from '@mui/material'
+import { DeleteAlert } from '@/app/components'
 
 export function CountriesList() {
   const [loading, setLoading] = useState(false)
@@ -135,9 +135,11 @@ export function CountriesList() {
       />
 
       <DeleteAlert
+        message="Are you sure you want to delete this country?"
         onClose={ onCloseAlert }
         onConfirm={ onConfirmDelete }
         open={ openAlert }
+        title="Delete Country"
       />
 
       <Snackbar

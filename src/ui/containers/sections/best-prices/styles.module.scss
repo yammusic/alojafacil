@@ -1,0 +1,56 @@
+$cardWidth: 240px;
+$cardHeight: 300px;
+
+.container {
+  margin: 3rem 0;
+  padding: 0 2rem;
+}
+
+.titleContainer {
+  margin-bottom: 2rem !important;
+}
+
+.title {
+  font-size: 28px !important;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.card {
+  width: $cardWidth;
+  height: $cardHeight;
+  position: relative;
+  display: flex;
+}
+
+.cardActionArea {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardMedia {
+  width: $cardWidth !important;
+  height: calc($cardHeight - 9rem) !important;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: .5rem;
+}

@@ -1,2 +1,2 @@
-export interface CountryListProps {
+export interface UsersListProps {
 }

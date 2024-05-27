@@ -5,8 +5,8 @@ import type { HotelAttributes } from './types'
 type Where = WhereOptions<HotelAttributes>
 
 export const getHotels = async (where?: Where) => {
-  const { Hotel, Review, City, State, Country } = await useDb()
-  const include = [Review, City, State, Country]
+  const { Hotel, Room, Review, City, State, Country } = await useDb()
+  const include = [Room, Review, City, State, Country]
   const hotels = await Hotel.findAll({ where, include })
   return hotels
 }

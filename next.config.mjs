@@ -21,6 +21,15 @@ const nextConfig = {
     serverComponentsExternalPackages: ['sequelize'],
   },
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.trvl-media.com',
+      },
+    ],
+  },
+
   webpack(config) {
     config.ignoreWarnings = [{
       module: /sequelize/,

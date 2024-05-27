@@ -6,6 +6,7 @@ import {
   SearchSection,
   Header,
   Footer,
+  BestPricesSection,
 } from '@/app/containers'
 
 export default function Home() {
@@ -20,6 +21,8 @@ export default function Home() {
           <PopularSection />
 
           <RecommendedSection />
+
+          <BestPricesSection />
         </Grid>
       </Box>
 

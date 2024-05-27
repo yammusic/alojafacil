@@ -1,0 +1,31 @@
+.container {
+  height: 320px;
+  flex-wrap: nowrap;
+  padding-top: 2rem;
+  overflow: hidden;
+}
+
+.left {
+  height: 100%;
+}
+
+.right {
+  height: 100%;
+}
+
+.image {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.grid {
+  height: 100% !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+}
+
+.gridItem {
+  width: 50%;
+  height: 50%;
+}

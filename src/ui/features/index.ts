@@ -1,5 +1,6 @@
 export * from './countries'
 export * from './hotels'
+export * from './roles'
 export * from './rooms'
-export * from './states'
+export * from './sessions'
 export * from './users'

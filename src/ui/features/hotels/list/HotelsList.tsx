@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Alert, Box, Snackbar } from '@mui/material'
 
+import { DeleteAlert } from '@/app/components'
 import { DataGrid } from '@/app/containers'
 import { hotelsData, useHotelsActions } from '@/domain/providers/store'
 import type { HotelAttributes } from '@/domain/db/features/Hotel/types'
@@ -11,9 +12,6 @@ import { createHotel, deleteHotel, fetchHotels, updateHotel } from '@/infra/serv
 
 import columns from './columns'
 import { HotelModal } from '../modal'
-import { DeleteAlert } from './DeleteAlert'
-
-
 
 export function HotelsList() {
   const [loading, setLoading] = useState(false)
@@ -131,9 +129,11 @@ export function HotelsList() {
       />
 
       <DeleteAlert
+        message="Are you sure you want to delete this hotel?"
         onClose={ onCloseAlert }
         onConfirm={ onConfirmDelete }
         open={ openAlert }
+        title="Delete Hotel"
       />
 
       <Snackbar
