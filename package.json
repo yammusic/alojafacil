@@ -22,9 +22,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.5",
     "@faker-js/faker": "^8.4.1",
-    "@fontsource/poppins": "5.0.14",
     "@fontsource/roboto": "^5.0.13",
-    "@hookform/resolvers": "^3.4.0",
     "@libsql/client": "^0.6.0",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
@@ -35,7 +33,6 @@
     "@prisma/client": "5.14.0",
     "@react-email/components": "^0.0.19",
     "@react-email/render": "^0.0.15",
-    "@react-input/mask": "^1.2.4",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "cookies-next": "^4.2.1",
@@ -68,8 +65,7 @@
     "sharp": "0.33.1",
     "sqlite3": "^5.1.7",
     "swr": "^2.2.5",
-    "tedious": "^18.2.0",
-    "yup": "^1.4.0"
+    "tedious": "^18.2.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",
