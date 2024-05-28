@@ -1,0 +1,51 @@
+.container {
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -1rem !important;
+}
+
+.searchContainer {
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.destination {
+  width: 240px;
+  border-radius: 2rem 0 0 2rem !important;
+}
+
+.datePicker {
+  width: 180px;
+  border-radius: 0 !important;
+  margin-left: -1px !important;
+}
+
+.guests {
+  width: 240px;
+  border-radius: 0 2rem 2rem 0 !important;
+  margin-left: -1px !important;
+}
+
+.searchInputContainer {
+  width: 434px;
+  margin-left: 16px;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.searchIcon {
+  border-radius: 50% !important;
+  padding: 0 !important;
+  min-width: 42px !important;
+  height: 42px !important;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+}

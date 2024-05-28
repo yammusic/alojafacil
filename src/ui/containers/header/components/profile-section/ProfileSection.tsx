@@ -22,7 +22,7 @@ import {
 } from '@mui/material'
 
 import { IoHomeOutline, IoSettingsOutline } from 'react-icons/io5'
-import { RiListSettingsLine } from 'react-icons/ri'
+// import { RiListSettingsLine } from 'react-icons/ri'
 import { AiOutlineDashboard } from 'react-icons/ai'
 import { FiLogOut } from 'react-icons/fi'
 
@@ -38,6 +38,7 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
   const router = useRouter()
   const currentUser = appCurrentUser() as any
   const { setCurrentUser } = useAppActions()
+  const userAdmin = currentUser?.roles?.includes('admin') ?? false
 
   const [isLoading, setIsLoading] = useState(false)
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -160,7 +161,7 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
             {/* Dashboard */}
             <ListItemButton LinkComponent={ Link } href={ !admin ? '/admin' : '/' }>
               <ListItemIcon className={ styles.icon }>
-                { !admin ? (
+                { (!admin && userAdmin) ? (
                   <AiOutlineDashboard size={ 18 } />
                 ) : (
                   <IoHomeOutline size={ 18 } />
@@ -169,13 +170,13 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
 
               <ListItemText>
                 <Typography variant="body2">
-                  { !admin ? 'Dashboard' : 'Home' }
+                  { (!admin && userAdmin) ? 'Dashboard' : 'Home' }
                 </Typography>
               </ListItemText>
             </ListItemButton>
 
             {/* Account Settings */}
-            <ListItemButton>
+            {/* <ListItemButton>
               <ListItemIcon className={ styles.icon }>
                 <RiListSettingsLine size={ 18 } />
               </ListItemIcon>
@@ -183,7 +184,7 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
               <ListItemText>
                 <Typography variant="body2">Account Settings</Typography>
               </ListItemText>
-            </ListItemButton>
+            </ListItemButton> */}
 
             {/* Logout */}
             <ListItemButton disabled={ isLoading } onClick={ onLogout }>

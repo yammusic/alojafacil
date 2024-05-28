@@ -8,8 +8,8 @@ import {
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers/http'
-import { getCity, getCities } from '@/domain/db'
-import { requestCitiesValidator } from './validator'
+import type { City } from '@/domain/db'
+import { getCity, getCities, getHotels } from '@/domain/db'
 
 export async function GET(req: NextRequest) {
   const res = NextResponse
@@ -20,11 +20,10 @@ export async function GET(req: NextRequest) {
   try {
     await apiMiddleware(req, params, res, {
       only: ['GET'],
-      permit: ['id', 'stateId'],
-      validator: requestCitiesValidator,
+      permit: ['id', 'stateId', 'countryId'],
     })
 
-    const { id, stateId } = params
+    const { id, stateId, countryId } = params
     let data: any = null
 
     if (id && !stateId) {
@@ -34,8 +33,21 @@ export async function GET(req: NextRequest) {
         id: Number(id),
         stateId: Number(stateId),
       })
-    } else {
+    } else if (!id && stateId) {
       data = await getCities({ stateId: Number(stateId) })
+    } else if (countryId) {
+      const seen = new Map<number, City>()
+      const hotels = await getHotels()
+
+      hotels.forEach((hotel: any) => {
+        if (!seen.has(hotel.cityId)) {
+          seen.set(hotel.cityId, hotel.city)
+        }
+      })
+
+      data = Array.from(seen.values())
+    } else {
+      data = await getCities()
     }
 
     if (!data) { throw new NotFoundException() }

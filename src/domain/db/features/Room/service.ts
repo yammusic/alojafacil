@@ -12,8 +12,8 @@ export const getRooms = async (where?: Where) => {
 }
 
 export const getRoom = async (where: Where) => {
-  const { Room, Hotel } = await useDb()
-  const include = [Hotel]
+  const { Room, Hotel, Booking } = await useDb()
+  const include = [Hotel, Booking]
   const room = await Room.findOne({ where, include })
   return room
 }

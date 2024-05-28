@@ -17,11 +17,12 @@ export function Footer() {
       } }
     >
       <Container className={ styles.container }>
-        <Typography fontSize={ 14 } variant="caption">
-          { 'Powered by ' }
+        <Typography color="common.white" fontSize={ 14 } variant="caption">
+          { 'Made with ❤️ by ' }
 
           <Link
             color="common.white"
+            fontWeight="bold"
             href="https://github.com/hackettyam"
             rel="noreferrer"
             target="_blank"

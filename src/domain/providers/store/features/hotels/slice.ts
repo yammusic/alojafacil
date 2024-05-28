@@ -5,12 +5,14 @@ import persistReducer from 'redux-persist/es/persistReducer'
 import storage from 'redux-persist/lib/storage'
 
 import {
+  setCitiesOptions,
   setHotels,
   setRooms,
 } from './actions'
 import type { HotelsState } from './types'
 
 const initialState: HotelsState = {
+  citiesOptions: [],
   hotels: [],
   rooms: [],
 }
@@ -35,6 +37,11 @@ export const hotelsSlice = createSlice({
     addCase(setRooms, (state, { payload }) => ({
       ...state,
       rooms: payload,
+    }))
+
+    addCase(setCitiesOptions, (state, { payload }) => ({
+      ...state,
+      citiesOptions: payload,
     }))
   },
 })

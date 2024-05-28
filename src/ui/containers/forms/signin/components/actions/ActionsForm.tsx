@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material'
 
-import { Link } from '../../../../../components'
 import type { ActionsFormProps } from './props-types'
 import styles from '../../styles.module.scss'
 
@@ -22,10 +21,6 @@ export function ActionsForm(props: Readonly<ActionsFormProps>) {
           control={ <Checkbox color="primary" value="remember" /> }
           label={ <Typography variant="body2">Keep me logged in</Typography> }
         />
-
-        <Link color="secondary.dark" href="/auth/forgot" variant="body2">
-          Forgot password?
-        </Link>
       </Box>
 
       <Button

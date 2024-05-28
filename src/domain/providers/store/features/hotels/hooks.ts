@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 
 import { useAppDispatch } from '../../shared/hooks'
 import {
+  setCitiesOptions,
   setHotels,
   setRooms,
 } from './actions'
@@ -19,11 +20,13 @@ export const useHotelsState = (): HotelsState => (
 
 export const hotelsData = () => useHotelsState().hotels
 export const roomsData = () => useHotelsState().rooms
+export const citiesOptions = () => useHotelsState().citiesOptions
 
 /* Actions */
 export const useHotelsActions = () => ({
   ...bindActionCreators({
     setHotels,
     setRooms,
+    setCitiesOptions,
   }, useAppDispatch()),
 })

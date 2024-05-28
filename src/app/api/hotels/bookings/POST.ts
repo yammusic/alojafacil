@@ -8,23 +8,23 @@ import {
 } from '@/domain/providers/http'
 
 export async function POST(req: NextRequest) {
-  const { Room } = await useDb()
+  const { Booking } = await useDb()
   const res = NextResponse
   const params = await req.json()
-  const { room: roomData } = params ?? {}
+  const { booking: bookingData } = params ?? {}
 
   try {
     await apiMiddleware(req, params, res, {
       only: ['POST'],
-      permit: ['room'],
+      permit: ['booking'],
     })
 
-    const room = await Room.create(roomData)
+    const booking = await Booking.create(bookingData)
 
     return responseApiSuccess(res, {
       content: {
-        message: 'Room created successfully!',
-        data: room,
+        message: 'Booking created successfully!',
+        data: booking,
       },
     })
   } catch (exception) {

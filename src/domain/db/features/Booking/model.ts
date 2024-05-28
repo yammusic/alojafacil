@@ -37,10 +37,10 @@ export class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   @Column(DataType.DATE)
   checkOut!: Date
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   guestInfo!: string
 
-  @Column(DataType.STRING)
+  @Column(DataType.TEXT)
   emergency!: string
 
   @Default(BookingStatus.PENDING)

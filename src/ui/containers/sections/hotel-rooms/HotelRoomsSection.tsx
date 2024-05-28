@@ -1,14 +1,27 @@
-import { calculateTotalPrice } from '@/domain/utils'
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Grid, Stack, Typography } from '@mui/material'
-import Image from 'next/image'
 import React from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Container,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { GoDot } from 'react-icons/go'
 
+import { calculateTotalPrice } from '@/domain/utils'
 import type { HotelRoomsSectionProps } from './props-types'
 import styles from './styles.module.scss'
 
 export function HotelRoomsSection(props: Readonly<HotelRoomsSectionProps>) {
-  const { hotel } = props
+  const { hotel, filters } = props
 
   return (
     <Container>
@@ -84,8 +97,10 @@ export function HotelRoomsSection(props: Readonly<HotelRoomsSectionProps>) {
 
                   <Box>
                     <Button
+                      LinkComponent={ Link }
                       className={ styles.button }
                       color="primary"
+                      href={ `/booking/${room?.id}?${new URLSearchParams({ ...filters } as any).toString()}` }
                       size="large"
                       variant="contained"
                     >

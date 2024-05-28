@@ -1,27 +1,78 @@
 'use client'
 
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import type { SyntheticEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import { DateTime } from 'luxon'
 import { Box, Button, Container, Divider, Grid, InputAdornment, useTheme } from '@mui/material'
-import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui'
+import { AutocompleteElement, Controller, FormContainer, TextFieldElement, useForm } from 'react-hook-form-mui'
 import { DatePicker } from '@mui/x-date-pickers'
 import { MdSearch } from 'react-icons/md'
 
-import type { SearchSectionProps } from './props-types'
+import type { City } from '@/domain/db/features/City/model'
+import { citiesOptions, useHotelsActions } from '@/domain/providers/store'
+import { fetchCitiesByCountry } from '@/infra/services'
+
+import { MenuGuests } from './MenuGuests'
+import type { SearchFormValues, SearchSectionProps } from './props-types'
 import styles from './styles.module.scss'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
+  const [anchorEl, setAnchorEl] = useState<EventTarget | HTMLElement | null>(null)
+  const [adults, setAdults] = useState<number>(1)
+  const [childrens, setChildrens] = useState<number>(0)
+  const router = useRouter()
+
   const { palette } = useTheme()
-  // const [value, setValue] = useState<string>('')
-  // const { palette, breakpoints } = useTheme()
+  const { setCitiesOptions } = useHotelsActions()
+  const cities = citiesOptions()
 
-  // const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-  //   setValue(e.target.value)
-  // }, [])
+  const formCtx = useForm<SearchFormValues>({
+    defaultValues: {
+      checkIn: DateTime.now(),
+      checkOut: DateTime.now().plus({ days: 1 }),
+      adults: 1,
+      childrens: 0,
+    },
+  })
+  const { checkIn } = formCtx.watch()
 
-  // const onClear = useCallback(() => {
-  //   setValue('')
-  // }, [])
+  const loadCities = useCallback(async () => {
+    if (!cities || cities.length === 0) {
+      const { content: { data } } = await fetchCitiesByCountry(48)
+      setCitiesOptions(data?.map((c: City) => ({ label: c.name, id: c.id })).sort((a, b) => a.label.localeCompare(b.label)))
+    }
+  }, [])
+
+  useEffect(() => { loadCities() }, [])
+
+  const onGuestClick = useCallback((e: SyntheticEvent) => {
+    setAnchorEl(e.currentTarget)
+  }, [])
+
+  const onGuestClose = useCallback(() => {
+    setAnchorEl(null)
+  }, [])
+
+  const onSubmit = useCallback(async (data: SearchFormValues) => {
+    setAnchorEl(null)
+    const { checkIn, checkOut, cityId } = data
+    if (!cityId) { return }
+
+    const params = new URLSearchParams({
+      ...data,
+      checkIn: checkIn.toISODate(),
+      checkOut: checkOut.toISODate(),
+    } as any)
+
+    router.push(`/search?${params.toString()}`)
+  }, [])
+
+  const onIncrementAdults = () => setAdults(adults + 1)
+  const onDecrementAdults = () => setAdults(Math.max(1, adults - 1))
+  const onIncrementChildren = () => setChildrens(childrens + 1)
+  const onDecrementChildren = () => setChildrens(Math.max(0, childrens - 1))
 
   return (
     <Grid
@@ -33,12 +84,15 @@ export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
       } }
     >
       <Container>
-        <FormContainer>
+        <FormContainer formContext={ formCtx } onSuccess={ onSubmit }>
           <Box className={ styles.searchContainer }>
             <AutocompleteElement
+              matchId
+              required
               label="Destination"
-              name="destination"
-              options={ [ 'Cartagena', 'San Andres', 'Medellín' ] }
+              name="cityId"
+              options={ cities }
+              rules={ { required: 'Destination is required' } }
               textFieldProps={ {
                 variant: 'outlined',
                 InputProps: { className: styles.destination }
@@ -47,30 +101,46 @@ export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
 
             <Divider />
 
-            <DatePicker
-              format="dd/MM/yyyy"
-              label="Check in"
+            <Controller
+              control={ formCtx.control }
               name="checkIn"
-              slotProps={ {
-                textField: {
-                  variant: 'outlined',
-                  InputProps: { className: styles.datePicker },
-                },
-              } }
+              render={ ({ field }) => (
+                <DatePicker
+                  { ...field }
+                  format="dd/MM/yyyy"
+                  label="Check in"
+                  minDate={ DateTime.now() }
+                  slotProps={ {
+                    textField: {
+                      variant: 'outlined',
+                      InputProps: { className: styles.datePicker },
+                    },
+                  } }
+                  value={ field.value ?? null }
+                />
+              ) }
             />
 
             <Divider />
 
-            <DatePicker
-              format="dd/MM/yyyy"
-              label="Check out"
+            <Controller
+              control={ formCtx.control }
               name="checkOut"
-              slotProps={ {
-                textField: {
-                  variant: 'outlined',
-                  InputProps: { className: styles.datePicker },
-                },
-              } }
+              render={ ({ field }) => (
+                <DatePicker
+                  { ...field }
+                  format="dd/MM/yyyy"
+                  label="Check out"
+                  minDate={ checkIn?.plus({ 'days': 1 }) ?? DateTime.now().plus({ 'days': 1 }) }
+                  slotProps={ {
+                    textField: {
+                      variant: 'outlined',
+                      InputProps: { className: styles.datePicker },
+                    },
+                  } }
+                  value={ field.value ?? null }
+                />
+              ) }
             />
 
             <Divider />
@@ -80,57 +150,34 @@ export function SearchSection({ onSearch }: Readonly<SearchSectionProps>) {
                 className: styles.guests,
                 endAdornment: (
                   <InputAdornment position="end" sx={ { mr: -1 } }>
-                    <Button color="secondary" sx={ { borderRadius: '50%', p: 0, minWidth: '42px', height: '42px' } }>
+                    <Button
+                      className={ styles.searchIcon }
+                      color="secondary"
+                      type="submit"
+                    >
                       <MdSearch size={ 26 } />
                     </Button>
-
-                    {/* <SearchIcon size={ 26 } sx={ { color: palette.grey[500], bgcolor: 'secondary.dark' } } /> */}
                   </InputAdornment>
                 ),
+                value: `${adults} adults, ${childrens} children`,
               } }
               label="Guests"
               name="guests"
+              onClick={ onGuestClick }
               variant="outlined"
             />
-          </Box>
 
-          { /* <OutlinedInput
-            aria-describedby="search-helper-text"
-            className={ styles.searchInputContainer }
-            endAdornment={
-              <InputAdornment position="end">
-                <ClearIcon
-                  color={ palette.error.dark }
-                  onPress={ onClear }
-                  sx={ { display: value ? 'inline-flex' : 'none' } }
-                />
-              </InputAdornment>
-        }
-            id="input-search-header"
-            inputProps={ { 'aria-label': 'weight' } }
-            onChange={ onChange }
-            placeholder="Search"
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon size={ 26 } />
-              </InputAdornment>
-        }
-            sx={ {
-          '& input': {
-            background: 'transparent !important',
-            paddingLeft: '4px !important'
-          },
-          [breakpoints.down('lg')]: {
-            width: 250
-          },
-          [breakpoints.down('md')]: {
-            width: '100%',
-            marginLeft: 4,
-            background: '#fff'
-          }
-        } }
-            value={ value }
-          /> */ }
+            <MenuGuests
+              adults={ adults }
+              anchorEl={ anchorEl as Element }
+              childrens={ childrens }
+              onClose={ onGuestClose }
+              onDecrementAdults={ onDecrementAdults }
+              onDecrementChildren={ onDecrementChildren }
+              onIncrementAdults={ onIncrementAdults }
+              onIncrementChildren={ onIncrementChildren }
+            />
+          </Box>
         </FormContainer>
       </Container>
     </Grid>
