@@ -54,10 +54,12 @@ jobs:
           app_build_command: 'npm run build'
           api_build_command: 'rm -rf ./node_modules/@next/swc-* && rm -rf ./.next/cache'
           ###### End of Repository/Build Configurations ######
-        # env:
-        #   PRE_BUILD_COMMAND: npm install -g prisma
+        env:
+          PRE_BUILD_COMMAND: npm install -g tedious sequelize-cli
+          # PRE_BUILD_COMMAND: npm install -g prisma
           # POST_BUILD_COMMAND: npm install @prisma/client
-          POST_BUILD_COMMAND: npm install tedious
+          POST_INSTALL_COMMAND: npm install -g tedious sequelize-cli
+          # POST_BUILD_COMMAND: npm install tedious
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
