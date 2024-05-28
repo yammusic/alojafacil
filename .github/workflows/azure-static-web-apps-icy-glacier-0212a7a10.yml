@@ -56,7 +56,8 @@ jobs:
           ###### End of Repository/Build Configurations ######
         # env:
         #   PRE_BUILD_COMMAND: npm install -g prisma
-        #   POST_BUILD_COMMAND: npm install @prisma/client
+          # POST_BUILD_COMMAND: npm install @prisma/client
+          POST_BUILD_COMMAND: npm install tedious
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
