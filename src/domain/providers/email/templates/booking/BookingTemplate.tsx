@@ -4,7 +4,7 @@ import { Body, Column, Container, Head, Heading, Hr, Html, Img, Preview, Row, Se
 import type { BookingTemplateProps } from './props-types'
 import styles from './styles'
 
-const baseUrl = process.env.RESEND_BASE_URL
+const baseUrl = process.env.BASE_URL
 
 export function BookingTemplate(props: Readonly<BookingTemplateProps>) {
   const { booking } = props
@@ -40,7 +40,7 @@ export function BookingTemplate(props: Readonly<BookingTemplateProps>) {
                   alt={ booking.name }
                   src={ `${booking.picture}` }
                   style={ { float: 'left' } }
-                  width="240px"
+                  width="180px"
                 />
               </Column>
 

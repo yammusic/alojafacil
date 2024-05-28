@@ -2,11 +2,16 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
-import { DataGrid } from '@/app/containers'
-import { appCountries, useAppActions } from '@/domain/providers/store'
+import { DataGrid } from '@/app/containers/data-grid/DataGrid'
+import { DeleteAlert } from '@/app/components/delete-alert/DeleteAlert'
+
+import { appCountries, useAppActions } from '@/domain/providers/store/features/app'
 import type { CountryAttributes } from '@/domain/db/features/Country/types'
-import type { CountryResponse } from '@/infra/services'
+
+import type { CountryResponse } from '@/infra/services/region/countries'
 import {
   createCountry,
   deleteCountry,
@@ -14,10 +19,8 @@ import {
   updateCountry,
 } from '@/infra/services'
 
-import columns from './columns'
 import { CountryModal } from '../modal'
-import { Alert, Snackbar } from '@mui/material'
-import { DeleteAlert } from '@/app/components'
+import columns from './columns'
 
 export function CountriesList() {
   const [loading, setLoading] = useState(false)
