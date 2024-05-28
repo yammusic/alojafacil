@@ -1,18 +1,12 @@
-import { Resend } from 'resend'
 import { render } from '@react-email/render'
 import nodemailer from 'nodemailer'
 
 import { BookingTemplate } from './templates/booking/BookingTemplate'
 
-const apiKey = process.env.RESEND_API_KEY
-const audienceId = process.env.RESEND_AUDIENCE_ID ?? ''
-
 const smtpUser = process.env.SMTP_USER
 const smtpPass = process.env.SMTP_PASS
 
 const transporter = nodemailer.createTransport({
-  // host: smtpHost,
-  // port: Number(smtpPort),
   service: 'gmail',
   secure: true,
   port: 465,
@@ -24,7 +18,7 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false,
   },
-})
+} as any)
 
 export const sendEmail = async (data: Record<string, any>) => {
   const { email, ...booking } = data
@@ -41,8 +35,7 @@ export const sendEmail = async (data: Record<string, any>) => {
     // await resend.emails.send({
     await transporter.sendMail({
       from: `Aloja Fácil <${smtpUser}>`,
-      // to: email,
-      to: 'yeison.molina91@gmail.com',
+      to: email,
       subject: 'Booking successful!',
       html: render(BookingTemplate({ booking } as any)),
     })
