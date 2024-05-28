@@ -24,12 +24,6 @@ jobs:
         with:
           version: latest
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
       - name: Install Dependencies
         run: pnpm install
 
@@ -38,7 +32,6 @@ jobs:
 
       - name: Remove node_modules
         run: rm -rf ./node_modules
-
 
       - name: Build And Deploy
         id: builddeploy
