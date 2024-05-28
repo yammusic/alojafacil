@@ -5,7 +5,8 @@ export async function seedCountries() {
   const db = useTurso()
 
   try {
-    const countries = await import('./data/countries.json') as any
+    // const countries = await import('./data/countries.json') as any
+    const countries: any = {}
     const data = Object.keys(countries).map((key) => ({ ...countries[key] })).filter((c) => c.name && c.id)
     const count = await db.country.count()
 
