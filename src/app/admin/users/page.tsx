@@ -1,9 +1,9 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
 
-import { Content } from '@/app/containers/admin'
-import { UsersList } from '@/app/features'
-import { useSession } from '@/domain/hooks'
+import { Content } from '@/app/containers/admin/content/Content'
+import { UsersList } from '@/app/features/users/list/UsersList'
+import { useSession } from '@/domain/hooks/cookies'
 
 export default function Users() {
   const session = useSession()

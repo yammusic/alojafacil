@@ -1,9 +1,9 @@
 import React from 'react'
 import { redirect } from 'next/navigation'
 
-import { Content } from '@/app/containers/admin'
-import { HotelsList } from '@/app/features'
-import { useSession } from '@/domain/hooks'
+import { Content } from '@/app/containers/admin/content/Content'
+import { HotelsList } from '@/app/features/hotels/list/HotelsList'
+import { useSession } from '@/domain/hooks/cookies'
 
 export default function Hotels() {
   const session = useSession()

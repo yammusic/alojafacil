@@ -1,7 +1,8 @@
-import { Content } from '@/app/containers/admin'
-import { useSession } from '@/domain/hooks'
-import { redirect } from 'next/navigation'
 import React from 'react'
+import { redirect } from 'next/navigation'
+
+import { Content } from '@/app/containers/admin/content/Content'
+import { useSession } from '@/domain/hooks/cookies'
 
 export default function Reservations() {
   const session = useSession()
