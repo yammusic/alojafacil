@@ -1,4 +1,5 @@
 import type { SequelizeOptions } from 'sequelize-typescript'
+import tedious from 'tedious'
 
 const config: SequelizeOptions = {
   // dialect: 'sqlite',
@@ -10,6 +11,7 @@ const config: SequelizeOptions = {
   database: String(process.env.DATABASE_NAME),
   username: String(process.env.DATABASE_USER),
   password: String(process.env.DATABASE_PASSWORD),
+  dialectModule: tedious,
   dialectOptions: {
     options: {
       encrypt: true,
