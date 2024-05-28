@@ -1,5 +1,5 @@
 import type { SequelizeOptions } from 'sequelize-typescript'
-import tedious from 'tedious'
+import * as tedious from 'tedious'
 
 const config: SequelizeOptions = {
   // dialect: 'sqlite',
