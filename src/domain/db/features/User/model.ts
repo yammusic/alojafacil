@@ -12,6 +12,7 @@ import {
   CreatedAt,
   UpdatedAt,
 } from 'sequelize-typescript'
+import { Op } from 'sequelize'
 import { DateTime } from 'luxon'
 
 import { SECRET_KEY } from '@/domain/constants'
@@ -71,14 +72,32 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   @HasMany(() => Review)
   reviews!: Review[]
 
+  async getRoles() {
+    if (!this.roles) {
+      const { sequelize } = await useDb()
+      const sql = `SELECT [roleId] FROM [users_roles] WHERE [userId] = ${this.id}`
+      const roleIds = (await sequelize.query(sql))[0].map((r: any) => r.roleId)
+      this.roles = await Role.findAll({ where: { id: { [Op.in]: roleIds } } })
+    }
+    return this.roles
+  }
+
+  async getSessions() {
+    if (!this.sessions) {
+      this.sessions = await Session.findAll({ where: { userId: this.id } })
+    }
+    return this.sessions
+  }
+
   hasSamePassword(password: string) {
     return this.password === hashPassword(password)
   }
 
   // Sessions
   async getAccessToken() {
-    const { Session } = await useDb()
     const secretKey = this.secretKey ?? SECRET_KEY
+    if (!this.sessions) { await this.getSessions() }
+
     const activeSessions = this.sessions?.filter((s: any) => s.status === SessionStatus.ACTIVE)
     if (!activeSessions) { return null }
     let activeToken
@@ -106,6 +125,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   async sign() {
     const secretKey = this.secretKey ?? SECRET_KEY
     const { accessToken, expiredAt } = await this.getAccessToken() ?? {}
+    if (!this.roles) { await this.getRoles() }
 
     if (!accessToken) {
       const expire = DateTime.now().plus({ 'days': 7 })
@@ -118,6 +138,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
           roles: this.roles.map((r: any) => r.name),
         },
       }, secretKey)
+
 
       const session = await Session.create({
         accessToken: token,
@@ -137,6 +158,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   async json() {
     const { accessToken } = await this.getAccessToken() ?? {}
+    if (!this.roles) { await this.getRoles() }
     const roles = this.roles?.map(({ name }: any) => name)
 
     return {

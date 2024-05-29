@@ -18,9 +18,9 @@ export const getUser = async (where: Where) => {
   return user
 }
 
-export const getUserByUsername = async (username: string) => {
+export const getUserByUsername = async (username: string, withInclude = false) => {
   const { User, Role, Session, UserInfo } = await useDb()
-  const include = [Role, Session, UserInfo]
+  const include = withInclude ? [Role, Session, UserInfo] : []
   let user = await User.findOne({ where: { username }, include })
   if (!user) { user = await User.findOne({ where: { email: username }, include }) }
   return user

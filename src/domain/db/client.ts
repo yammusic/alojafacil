@@ -65,6 +65,7 @@ export const useDb = async (sync: boolean = false) => {
   }
 
   return {
+    sequelize,
     Booking,
     City,
     Country,

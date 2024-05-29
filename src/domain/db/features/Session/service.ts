@@ -12,9 +12,9 @@ export const getSessions = async (where?: Where) => {
   return sessions
 }
 
-export const getSession = async (where: Where) => {
+export const getSession = async (where: Where, withInclude = false) => {
   const { Session, User } = await useDb()
-  const include = [User]
+  const include = withInclude ? [User] : []
   const session = await Session.findOne({ where, include })
   if (!session) return null
   return session
