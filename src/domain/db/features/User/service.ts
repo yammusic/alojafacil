@@ -30,5 +30,5 @@ export const getUserByAccessToken = async (accessToken: string) => {
   const { User, Session } = await useDb()
   const include = [User]
   const session = await Session.findOne({ where: { accessToken }, include })
-  return new User(session?.user as UserAttributes)
+  return session?.user
 }

@@ -3,12 +3,12 @@ import { cookies } from 'next/headers'
 import { deleteCookie } from 'cookies-next'
 
 import {
+  NotFoundException,
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
 } from '@/domain/providers/http'
-import type { Session } from '@/domain/db'
-import { SessionStatus, getSession } from '@/domain/db'
+import { SessionStatus, getSession } from '@/domain/db/features/Session'
 
 export async function DELETE(req: Request) {
   const res = NextResponse
@@ -21,9 +21,10 @@ export async function DELETE(req: Request) {
     })
 
     const accessToken = req.headers.get('authorization')?.split(' ')[1]
-    const session = await getSession({ accessToken }) as Session
+    const session = await getSession({ accessToken })
+    if (!session) { throw new NotFoundException() }
+
     session.status = SessionStatus.EXPIRED
-    // session.updatedAt = new Date()
     await session.save()
 
     deleteCookie('session', { cookies })

@@ -83,7 +83,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
     for (const s of activeSessions) {
       const { expiredAt } = await decodeJWT(s.accessToken, secretKey)
-      const session = new Session(s as SessionAttributes)
+      const session = await Session.findByPk(s.id)
+      if (!session) { continue }
 
       if (Number(expiredAt) < DateTime.now().toMillis()) {
         session.status = SessionStatus.EXPIRED

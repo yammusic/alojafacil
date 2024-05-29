@@ -58,7 +58,6 @@ jobs:
           PRE_BUILD_COMMAND: npm install -g tedious sequelize-cli
           # PRE_BUILD_COMMAND: npm install -g prisma
           # POST_BUILD_COMMAND: npm install @prisma/client
-          POST_INSTALL_COMMAND: npm install -g tedious sequelize-cli
           # POST_BUILD_COMMAND: npm install tedious
 
   close_pull_request_job:

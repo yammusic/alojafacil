@@ -66,7 +66,7 @@ export function ProfileSection({ admin }: Readonly<ProfileSectionProps>) {
       setIsLoading(false)
       onClose()
     }
-  }, [])
+  }, [currentUser])
 
   if (!currentUser) {
     return (
