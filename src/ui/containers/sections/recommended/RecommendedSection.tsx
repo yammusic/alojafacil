@@ -1,25 +1,24 @@
 'use client'
 
 import React, { useEffect, useMemo } from 'react'
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Rating,
-  Stack,
-  Typography,
-} from '@mui/material'
+import Link from 'next/link'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardActionArea from '@mui/material/CardActionArea'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Rating from '@mui/material/Rating'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { DateTime } from 'luxon'
 
 import type { Hotel } from '@/domain/db/features/Hotel/model'
 import { hotelsData, useHotelsActions } from '@/domain/providers/store'
 import { calculateAverageRating } from '@/domain/utils/rating'
-import { fetchHotels } from '@/infra/services'
+import { fetchHotels } from '@/infra/services/hotels/hotels'
 import styles from './styles.module.scss'
-import Link from 'next/link'
 
 const RATINGS: any = {
   0.5: 'Useless',
@@ -69,12 +68,20 @@ export function RecommendedSection() {
             { sortedHotels.slice(0, 8).map((hotel) => {
               const rating = calculateAverageRating(hotel?.reviews, hotel?.rating)
 
+              const params = new URLSearchParams({
+                cityId: hotel?.id.toString(),
+                checkIn: DateTime.now().toISODate(),
+                checkOut: DateTime.now().plus({ days: 1 }).toISODate(),
+                adults: '1',
+                childrens: '0',
+              })
+
               return (
                 <Card className={ styles.card } key={ hotel?.name }>
                   <CardActionArea
                     LinkComponent={ Link }
                     className={ styles.cardActionArea }
-                    href={ `/hotel/${hotel?.id}` }
+                    href={ `/hotel/${hotel?.id}?${params.toString()}` }
                   >
                     <CardMedia
                       alt={ hotel?.name }
