@@ -12,13 +12,25 @@ type Props = {
   searchParams: Partial<FilterFormValues>
 }
 
+const getData = async (hotelId: number) => {
+  const hotel = await getHotel({ id: hotelId })
+  await hotel?.getCity()
+  await hotel?.getState()
+  await hotel?.getCountry()
+  await hotel?.getReviews()
+  await hotel?.getRooms()
+
+  const users = await getUsers()
+
+  return { hotel, users }
+}
+
 export default async function Hotel(props: Readonly<Props>) {
   const { params, searchParams } = props
   const { id } = params
 
-  const hotel = await getHotel({ id })
+  const { hotel, users } = await getData(Number(id))
   if (!hotel) { return redirect('/') }
-  const users = await getUsers()
 
   return (
     <>

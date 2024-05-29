@@ -108,4 +108,39 @@ export class Hotel extends Model<HotelAttributes, HotelCreationAttributes> imple
 
   @HasMany(() => Review)
   reviews!: Review[]
+
+  async getCity() {
+    if (!this.city) {
+      this.city = await City.findOne({ where: { id: this.cityId } }) as City
+    }
+    return this.city
+  }
+
+  async getState() {
+    if (!this.state) {
+      this.state = await State.findOne({ where: { id: this.stateId } }) as State
+    }
+    return this.state
+  }
+
+  async getCountry() {
+    if (!this.country) {
+      this.country = await Country.findOne({ where: { id: this.countryId } }) as Country
+    }
+    return this.country
+  }
+
+  async getRooms() {
+    if (!this.rooms) {
+      this.rooms = await Room.findAll({ where: { hotelId: this.id } })
+    }
+    return this.rooms
+  }
+
+  async getReviews() {
+    if (!this.reviews) {
+      this.reviews = await Review.findAll({ where: { hotelId: this.id } })
+    }
+    return this.reviews
+  }
 }
