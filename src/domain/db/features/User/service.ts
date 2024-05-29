@@ -5,16 +5,24 @@ import type { UserAttributes } from './types'
 type Where = WhereOptions<UserAttributes>
 
 export const getUsers = async () => {
-  const { User, Role, Session, UserInfo } = await useDb()
-  const include = [Role, Session, UserInfo]
+  const { User, UserInfo } = await useDb()
+  const include = [UserInfo]
   const users = await User.findAll({ include })
+
+  // for (const user of users) {
+  //   await user.getRoles()
+  //   await user.getSessions()
+  // }
+
   return users
 }
 
 export const getUser = async (where: Where) => {
-  const { User, Role, Session, UserInfo } = await useDb()
-  const include = [Role, Session, UserInfo]
+  const { User, UserInfo } = await useDb()
+  const include = [UserInfo]
   const user = await User.findOne({ where, include })
+  await user?.getRoles()
+  await user?.getSessions()
   return user
 }
 
