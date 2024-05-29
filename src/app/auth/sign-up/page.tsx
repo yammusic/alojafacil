@@ -1,15 +1,16 @@
 import React from 'react'
-import { redirect } from 'next/navigation'
+// import { redirect } from 'next/navigation'
 import { Divider, Grid, Typography } from '@mui/material'
 
-import { Logo, Link } from '@/app/components/common'
-import { SignUpForm } from '@/app/containers'
-import { useSession } from '@/domain/hooks'
+import { Logo } from '@/app/components/common/logo/Logo'
+import { Link } from '@/app/components/common/link/Link'
+import { SignUpForm } from '@/app/containers/forms/signup/SignUpForm'
+// import { useSession } from '@/domain/hooks/cookies'
 import styles from './styles.module.scss'
 
 export default async function SignUp() {
-  const session = useSession()
-  if (session) return redirect('/')
+  // const session = useSession()
+  // if (session) return redirect('/')
 
   return (
     <Grid container className={ styles.container }>

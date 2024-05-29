@@ -2,8 +2,9 @@ import React from 'react'
 // import { redirect } from 'next/navigation'
 import { Divider, Grid, Typography } from '@mui/material'
 
-import { Logo, Link } from '@/app/components/common'
-import { SignInForm } from '@/app/containers'
+import { Logo } from '@/app/components/common/logo/Logo'
+import { Link } from '@/app/components/common/link/Link'
+import { SignInForm } from '@/app/containers/forms/signin/SignInForm'
 // import { useSession } from '@/domain/hooks'
 import styles from './styles.module.scss'
 

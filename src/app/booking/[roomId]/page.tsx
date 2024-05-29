@@ -2,9 +2,12 @@ import React from 'react'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import { DateTime } from 'luxon'
 
-import type { FilterFormValues } from '@/app/containers'
-import { BookingCard, BookingForm, Footer, Header } from '@/app/containers'
-import { getRoom } from '@/domain/db'
+import { Header } from '@/app/containers/header/Header'
+import { Footer } from '@/app/containers/footer/Footer'
+import { BookingCard } from '@/app/containers/booking-card/BookingCard'
+import { BookingForm } from '@/app/containers/forms/booking/BookingForm'
+import { getRoom } from '@/domain/db/features/Room/service'
+import type { FilterFormValues } from '@/app/containers/sections/filter/props-types'
 import styles from './styles.module.scss'
 
 interface Props {
