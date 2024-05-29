@@ -23,6 +23,7 @@ import { UserInfo } from '../UserInfo'
 import { UserRole } from '../UserRole'
 import { Booking } from '../Booking'
 import { Review } from '../Review'
+import { useDb } from '../../client'
 
 @Table({ tableName: 'users', timestamps: true })
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -76,6 +77,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   // Sessions
   async getAccessToken() {
+    const { Session } = await useDb()
     const secretKey = this.secretKey ?? SECRET_KEY
     const activeSessions = this.sessions?.filter((s: any) => s.status === SessionStatus.ACTIVE)
     if (!activeSessions) { return null }
