@@ -24,6 +24,7 @@ import { UserInfo } from '../UserInfo'
 import { UserRole } from '../UserRole'
 import { Booking } from '../Booking'
 import { Review } from '../Review'
+import { useDb } from '../../client'
 
 @Table({ tableName: 'users', timestamps: true })
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -73,8 +74,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   async getRoles() {
     if (!this.roles) {
-      const roleIds = await UserRole.findAll({ where: { userId: this.id } })
-      this.roles = await Role.findAll({ where: { id: { [Op.in]: roleIds.map((r: any) => r.roleId) } } })
+      const { sequelize } = await useDb()
+      const sql = `SELECT "roleId" FROM users_roles WHERE "userId" = ${this.id}`
+      const roleIds = (await sequelize.query(sql))[0].map((r: any) => r.roleId)
+      this.roles = await Role.findAll({ where: { id: { [Op.in]: roleIds } } })
     }
     return this.roles
   }
