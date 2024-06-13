@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "rm -rf .next && NODE_ENV=development next dev",
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production next start",
     "lint": "next lint",
@@ -44,6 +44,7 @@
     "next": "14.2.3",
     "nextjs-toploader": "^1.6.12",
     "nodemailer": "^6.9.13",
+    "pg": "^8.12.0",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",

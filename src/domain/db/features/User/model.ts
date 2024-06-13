@@ -15,8 +15,8 @@ import {
 import { Op } from 'sequelize'
 import { DateTime } from 'luxon'
 
-import { SECRET_KEY } from '@/domain/constants'
-import { decodeJWT, hashPassword, signJWT } from '@/domain/utils'
+import { SECRET_KEY } from '@/domain/constants/env'
+import { decodeJWT, hashPassword, signJWT } from '@/domain/utils/crypto'
 import { UserStatus, type UserAttributes, type UserCreationAttributes } from './types'
 import { Session, SessionStatus } from '../Session'
 import { Role } from '../Role'
@@ -24,7 +24,6 @@ import { UserInfo } from '../UserInfo'
 import { UserRole } from '../UserRole'
 import { Booking } from '../Booking'
 import { Review } from '../Review'
-import { useDb } from '../../client'
 
 @Table({ tableName: 'users', timestamps: true })
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -58,7 +57,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   updatedAt?: Date
 
   @HasOne(() => UserInfo)
-  info?: ReturnType<() => UserInfo>
+  info?: ReturnType<() => (UserInfo | null)>
 
   @BelongsToMany(() => Role, () => UserRole)
   roles!: Role[]
@@ -74,12 +73,17 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   async getRoles() {
     if (!this.roles) {
-      const { sequelize } = await useDb()
-      const sql = `SELECT [roleId] FROM [users_roles] WHERE [userId] = ${this.id}`
-      const roleIds = (await sequelize.query(sql))[0].map((r: any) => r.roleId)
-      this.roles = await Role.findAll({ where: { id: { [Op.in]: roleIds } } })
+      const roleIds = await UserRole.findAll({ where: { userId: this.id } })
+      this.roles = await Role.findAll({ where: { id: { [Op.in]: roleIds.map((r: any) => r.roleId) } } })
     }
     return this.roles
+  }
+
+  async getInfo() {
+    if (!this.info) {
+      this.info = await UserInfo.findOne({ where: { userId: this.id } })
+    }
+    return this.info
   }
 
   async getSessions() {
@@ -87,6 +91,25 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
       this.sessions = await Session.findAll({ where: { userId: this.id } })
     }
     return this.sessions
+  }
+
+  async getBookings() {
+    if (!this.bookings) {
+      this.bookings = await Booking.findAll({ where: { userId: this.id } })
+    }
+    return this.bookings
+  }
+
+  async getReviews() {
+    if (!this.reviews) {
+      this.reviews = await Review.findAll({ where: { userId: this.id } })
+    }
+    return this.reviews
+  }
+
+  async isAdmin() {
+    if (!this.roles) { await this.getRoles() }
+    return this.roles?.some((r: any) => r.name === 'admin')
   }
 
   hasSamePassword(password: string) {

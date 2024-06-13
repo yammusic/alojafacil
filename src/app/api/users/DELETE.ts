@@ -4,6 +4,8 @@ import '@/domain/polyfills'
 
 import { useDb } from '@/domain/db'
 import {
+  NotFoundException,
+  UnauthorizedException,
   apiMiddleware,
   responseApiException,
   responseApiSuccess,
@@ -20,6 +22,10 @@ export async function DELETE(req: NextRequest) {
       only: ['DELETE'],
       permit: ['id'],
     })
+
+    const user = await User.findByPk(id)
+    if (!user) { throw new NotFoundException() }
+    if (await user.isAdmin()) { throw new UnauthorizedException() }
 
     await UserInfo.destroy({ where: { userId: id } })
     await User.destroy({ where: { id } })

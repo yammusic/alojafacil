@@ -22,6 +22,7 @@ import { UserModal } from '../modal'
 export function UsersList() {
   const [loading, setLoading] = useState(false)
   const [notification, setNotification] = useState('')
+  const [error, setError] = useState('')
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [openAlert, setOpenAlert] = useState(false)
   const [openModal, setOpenModal] = useState(false)
@@ -31,6 +32,9 @@ export function UsersList() {
   const users = appUsers()
 
   const loadUsers = useCallback(async() => {
+    if (!users || users.length === 0) {
+      setLoading(true)
+    }
     const { content: { data } } = await fetchUsers()
     setUsers(data as any)
     setLoading(false)
@@ -58,11 +62,17 @@ export function UsersList() {
     setOpenAlert(false)
     setLoading(true)
 
-    const { content: { message } } = await deleteUser(selectedUser.id)
-    setNotification(message)
-    setOpenSnackbar(true)
-
-    await loadUsers()
+    try {
+      const { content: { message } } = await deleteUser(selectedUser.id)
+      setNotification(message)
+      setOpenSnackbar(true)
+      await loadUsers()
+    } catch (err: any) {
+      setError(err?.response?.data?.content?.message ?? err?.toString())
+      setOpenSnackbar(true)
+    } finally {
+      setLoading(false)
+    }
   }, [selectedUser])
 
   const onSubmit = useCallback(async (data: User) => {
@@ -151,11 +161,11 @@ export function UsersList() {
       >
         <Alert
           onClose={ onCloseSnackbar }
-          severity="success"
+          severity={ notification ? 'success' : 'error' }
           sx={ { width: '100%' } }
           variant="filled"
         >
-          { notification }
+          { notification ? notification : error }
         </Alert>
       </Snackbar>
     </Box>
