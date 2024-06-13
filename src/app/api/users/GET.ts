@@ -21,14 +21,25 @@ export async function GET(req: NextRequest) {
     })
 
     const { id } = params
-    const data = (
+    const users = (
       id
         ? await getUser({ id: Number(id) })
         : await getUsers()
     )
 
-    if (!data) { throw new NotFoundException() }
-    const isPlural = data instanceof Array
+    if (!users) { throw new NotFoundException() }
+    const isPlural = users instanceof Array
+    let data: any = users
+
+    if (isPlural && users.length > 0) {
+      data = []
+      for (const user of users) {
+        data.push(await user.json())
+      }
+    } else if (!isPlural && data) {
+      await data.getRoles()
+      await data.getInfo()
+    }
 
     return responseApiSuccess(res, {
       content: {

@@ -84,7 +84,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
   async getInfo() {
     if (!this.info) {
-      this.info = await UserInfo.findOne({ where: { userId: this.id } })
+      const { sequelize } = await useDb()
+      const sql = `SELECT * FROM user_info WHERE "userId" = ${this.id}`
+      this.info = (await sequelize.query(sql))[0][0] as any
+      // this.info = await UserInfo.findOne({ where: { userId: this.id } })
     }
     return this.info
   }
@@ -186,6 +189,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
     const { accessToken } = await this.getAccessToken() ?? {}
     if (!this.roles) { await this.getRoles() }
     const roles = this.roles?.map(({ name }: any) => name)
+    const info = await this.getInfo()
 
     return {
       id: this.id,
@@ -193,6 +197,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
       email: this.email,
       accessToken,
       roles,
+      info,
     }
   }
 }

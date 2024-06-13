@@ -53,8 +53,8 @@ const columns: GridColDef[] = [
     maxWidth: 120,
     renderCell: ({ row }) => (
       <Stack direction="row" sx={ { alignItems: 'center', gap: 2, height: '100%' } }>
-        { row.roles?.map((role: RoleAttributes) => (
-          <Typography key={ role.id } variant="body2">{ role.name.humanize() }</Typography>
+        { row.roles?.map((role: string) => (
+          <Typography key={ role } variant="body2">{ role.humanize() }</Typography>
         )) }
       </Stack>
     ),
